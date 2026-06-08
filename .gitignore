@@ -1,0 +1,17 @@
+# DCS mission files (large binaries)
+*.miz
+
+# Extracted mission internals
+miz_extracted/
+
+# MOOSE framework (download separately)
+Moose.lua
+
+# Editor backups
+*.bak
+*.tmp
+*~
+
+# OS junk
+Thumbs.db
+.DS_Store

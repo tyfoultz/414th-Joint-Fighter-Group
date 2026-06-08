@@ -1,0 +1,365 @@
+C-130J-30 Mission Systems
+=========================
+DCS World Script | EC-130H Compass Call (EW) + RC-130H Rivet Joint (ISR)
+Player-only — static slots only. F10 menu: "C-130J-30 | Mission Systems"
+
+
+============================================================
+ELECTRONIC WARFARE (EW)
+============================================================
+
+EQUIPMENT SETUP
+---------------
+Must be selected before any jamming is available.
+
+  Config           Power pool  Pods                      Coverage
+  Defensive        2,500       3x hi-band                Tracking radars + missile spoofing
+  Offensive        4,500       2x lo-band                Acquisition / search radars
+  Full Spectrum    5,500       2x lo-band + 1x hi-band   Both bands
+  (In flight the power level is shown as a % of this pool — bigger pool = longer on-station.)
+
+  Defensive
+  Three hi-band (X/K-band) pods. Optimized for terminal-phase protection: missile spoofing
+  is fully active and tracking radars (SA-11, SA-15, SA-19, SA-8, Roland,
+  HQ-7, ZSU-23, Hawk TR) are jammed at full effectiveness. Lo-band acquisition radars
+  (SA-5, SA-10, SA-2, SA-3, SA-6, Hawk SR/CWAR, Dog Ear, EWR) suffer a 40% probability penalty.
+  Lowest capacity — not suited for extended ground-suppression tasking.
+
+  Offensive
+  Two lo-band (L/S/C-band) pods. Built for suppressing long-range ground threats.
+  Acquisition and search radars jam at full effectiveness. Tracking radars suffer a 40%
+  probability penalty. Missile spoofing is unavailable — no hi-band guidance jamming.
+  Higher capacity supports longer on-station suppression tasking.
+
+  Full Spectrum
+  Two lo-band pods plus one hi-band pod. No cross-band penalties. Missile spoofing active.
+  Highest capacity. Best choice for unescorted operations or when the threat picture is
+  unknown. Running multiple modes simultaneously drains capacity faster.
+
+On selection, confirmation shows loadout, pod config, power (100%), and coverage band.
+
+
+ENERGY
+------
+The jammer "power level" drains while jamming, regens at 5/sec when idle. It is shown as a
+percentage everywhere (e.g. "Power: 100%"); overheat at 0%, all modes off until recovered.
+Alert fires at 20%: EW | LOW POWER: 20% — consider reducing modes
+
+Drain rates:
+  Area jamming        3 / sec  + 0.5 / sec per emitter currently suppressed
+  Directional         1 / sec  + 0.5 / sec per emitter currently suppressed
+  Spot                5 / sec
+Suppressing a whole IADS at once burns capacity fast; holding one or two sites stays cheap.
+
+Status line updates every 30 seconds.
+
+
+JAMMING MODES
+-------------
+Broad coverage trades power; focused modes hit harder. Pick the right tool:
+
+  Area Defense        Omnidirectional. Intercepts radar-guided missiles from any bearing.
+  Area Offense        Omnidirectional, widest coverage, but power spreads thin
+                      (x0.65 effectiveness). Best for blanketing many sites at once.
+  Directional D/O     90-degree sector (front/left/right/rear). FULL power in-sector and
+                      cheapest to run. Best when threats sit on one bearing.
+  Spot Jamming        Single target, highest power. Punches through ECCM (recovers half
+                      the difficulty penalty) — the tool for hardened SA-10 / SA-5.
+                      FLAT ~100nm reach, altitude-INDEPENDENT (full power inside ~70nm),
+                      so it stays reliable even down low. Auto-cancels if out of range/LOS.
+                      Target list shows SAM/EWR sites only (AAA is never detected).
+
+Area and Directional reach scale with altitude (see Offensive Jamming); Spot does not.
+
+
+MISSILE SPOOFING
+----------------
+Requires hi-band pods. Active on Defensive and Full Spectrum. Unavailable on Offensive.
+One roll per second vs inbound RED radar-guided missiles (per-tick chance by range):
+
+  ~20nm = 3%    ~15nm = 8%    ~10nm = 18%    ~6nm = 48%    ~3nm = 82%    ~1.5nm = 95%
+
+The probability curve is intentionally steep at close range — most missiles will fly in
+close before guidance breaks, creating a dramatic last-second defeat rather than being killed
+silently at long range.
+Salvos and fast close-range shots can still leak through. Defensive jamming is strong
+protection, not a guarantee.
+A missile is never spoofed until it has flown ~3nm clear of its launcher (CFG_spoofMinTravel),
+so a defeated missile can't detonate on top of the launch vehicle.
+
+
+OFFENSIVE JAMMING
+-----------------
+BURN-THROUGH MODEL — a standoff jammer is strongest at long range. Up close the radar's
+skin return overpowers the noise, so area/directional jamming is weak. Base probability
+RISES with distance to the emitter:
+
+  <= 10nm = 40%    <= 25nm = 62%    <= 50nm = 82%    <= 100nm = 93%    <= 200nm = 98%
+
+Reach (AREA + DIRECTIONAL only) also scales with altitude: ~25nm on the deck, growing to
+the full 200nm by ~45,000ft. Combined effect: to jam broadly you must CLIMB (extend reach)
+and STAND OFF (beat burn-through). Down low and close in, area jamming barely works — use
+Spot there instead. SPOT has its own flat ~100nm reach and ignores both altitude and
+burn-through.
+
+Final prob = base × difficulty × cross-band penalty × mode power.
+  Mode power: Spot = strongest (own flat-range model, exempt from burn-through),
+              Directional = full, Area = x0.65 (spread).
+Success = radar set to WEAPON_HOLD — the site stays online and keeps tracking but cannot
+acquire/engage you until the jam window expires. Failed roll = cooldown before retry
+(1-30s, distance-based). ROE always restores when suppression ends.
+
+LOS to a radar is checked with the emitter lifted 30m, so sites whose 3D model sits dug
+into the terrain are not falsely treated as masked.
+
+SAM radar destroyed while suppressed → immediate alert: THREAT NEUTRALIZED: SA-6
+
+
+JAM DIFFICULTY AND SUPPRESSION DURATION
+-----------------------------------------
+Multipliers model only RELATIVE ECCM resistance — even the toughest systems are jammed
+reliably by this platform.
+Systems marked [LO] are lo-band (L/S/C-band acquisition radars) — jammed at full
+effectiveness by Offensive config; 40% penalty on Defensive.
+Systems marked [HI] are hi-band (X/K-band tracking radars) — jammed at full
+effectiveness by Defensive config; 40% penalty on Offensive.
+Full Spectrum suffers no penalty against either band.
+
+  System            Band   Multiplier   Suppression
+  SA-10 / S-300     [LO]   0.80x        30 sec
+  Hawk TR           [HI]   0.84x        60 sec
+  SA-11 / Buk       [HI]   0.85x        40 sec
+  SA-5 / S-200      [LO]   0.86x        60 sec
+  Hawk CWAR         [LO]   0.86x        60 sec
+  SA-15 / Tor       [HI]   0.86x        45 sec
+  SA-19 / Tunguska  [HI]   0.86x        60 sec
+  Hawk SR           [LO]   0.88x        60 sec
+  SA-6 / Kub        [LO]   0.89x        60 sec
+  HQ-7              [HI]   0.91x        60 sec
+  SA-8 / Osa        [HI]   0.92x        60 sec
+  Roland            [HI]   0.92x        60 sec
+  SA-3 / S-125      [LO]   0.93x        60 sec
+  SA-2 / S-75       [LO]   0.96x        60 sec
+  ZSU-23 / Shilka   [HI]   0.96x        60 sec
+  Dog Ear           [LO]   0.98x        60 sec
+  EWR               [LO]   0.99x        60 sec
+
+Unlisted systems: 1.0x multiplier, 60-sec suppression, treated as hi-band.
+
+SA-10 by range (Full Spectrum, directional, no band penalty) — burn-through in action:
+  @ 10nm:  0.40 x 0.80 = ~32%   (close in, radar burns through the noise)
+  @ 50nm:  0.82 x 0.80 = ~66%
+  @ 120nm: 0.98 x 0.80 = ~78%   (standoff, full effect)
+
+At 120nm standoff vs SA-10, by mode:
+  Directional: 0.98 x 0.80         = ~78%
+  Area:        0.98 x 0.80 x 0.65  = ~51%
+  Spot:        own flat ~100nm model, ~90% — the tool where burn-through/altitude kill area
+
+Hardest vs easiest @ 120nm: SA-10 = 0.98 x 0.80 = ~78%   EWR = 0.98 x 0.99 = ~97%
+
+Wrong-band penalty (x0.60), directional @ 120nm:
+  Defensive vs SA-10: 0.98 x 0.80 x 0.60 = ~47%
+  Offensive vs SA-15: 0.98 x 0.86 x 0.60 = ~51%
+
+
+============================================================
+ISR — INTELLIGENCE, SURVEILLANCE & RECONNAISSANCE
+============================================================
+
+DETECTION
+---------
+Passive sweep every 5 seconds. SAM and EWR radar emitters only. AAA / CIWS (Shilka,
+Gepard, Vulcan, Phalanx, SA-19 Tunguska) and launchers are ignored — not worth locating —
+so they never appear in contacts, SIGINT, the track list, or the spot list. (Area jamming
+still suppresses them incidentally.)
+Range by altitude:
+  ~sea level = ~50nm    ~20,000ft = ~100nm    ~40,000ft = ~200nm+
+
+
+CONTACTS  (routine ISR — muted while jamming, see MESSAGES)
+--------
+  CONTACT: SA-6 | BE 142/38         new emitter detected
+  LOST: SA-6                        out of range or off-air
+  MOVED: SA-6 0.8nm                 emitter relocated >500m
+Location is given as bullseye (BE brg/dist) throughout — the standard players call out.
+
+
+THREAT ALERTS
+-------------
+SA-10, SA-5, SA-11, SA-15 — immediate popup on first detection. Always fires, even
+while jamming (safety override).
+  THREAT: SA-10 | BE 312/48
+
+
+ELINT TRACKING
+--------------
+Up to 3 simultaneous tracks. F10 map mark placed and refreshed every 15 seconds.
+Two-phase lock process:
+
+  Phase 1 — 0% to 85%  (60–360s depending on range)
+    0–25%    Initial Contact   ±50nm / ±30° bearing
+    25–50%   Tracking          Error narrowing
+    50–85%   Refined           Closing toward 10nm
+    85%      Phase 1 Lock      ±10nm / ±5° bearing
+
+  Phase 2 — 85% to 100%  (4× longer than Phase 1)
+    85–99%   ELINT Lock        Bullseye added, coalition-wide broadcast, mark kept.
+    100%     Precise Fix       Second coalition-wide broadcast. Zero error margin.
+
+Only 3 tracks are actively worked at once. A Phase-1 lock is "parked" (mark kept) and the
+slot freed; Phase 2 reuses that same mark when it is later refined — one mark per emitter.
+
+AUTO-TRIANGULATE — ON by default. Breadth-first sweep strategy:
+  1. Get a PHASE-1 lock (~10nm) on EVERY emitter in range first, closest-first.
+  2. Only once nothing in range still needs Phase 1 does it go back and refine parked
+     locks up to a PRECISE FIX (Phase 2), closest-first.
+  3. PRIORITY OVERRIDE: a high-priority SAM (SA-10, SA-5, SA-11, SA-15) coming online
+     jumps the queue — if all slots are busy it preempts the least-important track (a
+     refining track first, else the farthest non-priority track) so it is worked first.
+A manual Track Emitter pick also takes priority over auto and is never auto-bumped.
+Queue messages (muted while jamming): "AUTO: SA-6 | BE 142/38", "AUTO*: ..." for a
+priority preempt, "REFINE: ..." for Phase 2.
+No player input required. Toggle via ISR menu.
+
+Status line:
+  ISR | Range 180nm | Contacts: 6 | Working: 3/3 | Locked: 2 | Precise: 1 [SA-6 ~2min | ...]
+    Working  = slots actively progressing (with per-track time remaining)
+    Locked   = parked Phase-1 fixes awaiting refinement
+    Precise  = completed precise fixes
+
+TRACK EMITTER (manual) — Lists every untracked in-range emitter. Picking one always works:
+if all 3 slots are full it preempts the least-important auto-track (a refining track first,
+else the farthest non-priority one) to make room. A manual choice is never auto-bumped.
+
+STOP TRACK — Lists active tracks as SYSTEM + BE + confidence (never the raw group name,
+which can leak the real location). e.g. "SA-6 BE 142/38 [72%]".
+
+SIGINT REPORT — On-demand, BROADCAST TO ALL BLUE (not just the crew). Sorted by THREAT
+LEVEL then DISTANCE; each line shows system, bullseye, and range; priority threats flagged
+with a leading "*".
+
+
+============================================================
+CREW COORDINATION
+============================================================
+
+Send a handoff brief to any BLUE PLAYER air group (AI flights are never listed). Covers EW
+status, SIGINT contacts with Bullseye, and active ELINT tracks with confidence and position.
+30-second display on receiving end. The recipient list only shows currently occupied player
+slots, so it updates as players join or leave.
+
+
+============================================================
+MESSAGES
+============================================================
+
+Two audiences: the C-130 crew (who see everything) and everyone else on BLUE
+(who see only the finished intel). Here is who gets what.
+
+
+THE C-130 CREW  —  their own cockpit only
+-----------------------------------------
+The crew sees the full picture, delivered in three ways:
+
+  Instant popup     Threat alerts, loadout confirm, low-capacity warning,
+                    THREAT NEUTRALIZED, mode toggles, track/spot selection.
+                    Shown the moment they happen, 15s. (SIGINT report now goes coalition-wide
+                    — see below.)
+
+  Batched events    Missile-spoof calls and jam status. Collected and shown together every 10s,
+                    15s on screen. When jamming is active and nothing locks this tick, a single
+                    summary line fires: "Jam: no lock (N site(s))". Individual per-target failure
+                    lines are never shown — if any site was suppressed this tick, the batch is
+                    silent (the persistent suppression banners already tell the story).
+
+  Suppression       On a successful jam the crew gets "Suppressed: SA-x — clear to engage"
+  confirm           displayed directly (not batched) for the FULL jam window of that system
+                    (SA-10 = 30s, SA-11 = 40s, SA-15 = 45s, everything else = 60s). It
+                    disappears at the same moment the SAM goes back to OPEN_FIRE, so there
+                    is never any ambiguity about whether it is still safe to engage.
+
+  Status lines      Rolling EW and ISR summary lines. Refresh at most every 30s.
+
+  MUTED WHILE JAMMING  Routine ISR chatter — contacts, MOVED, auto-triangulate pickups,
+                    REFINE, track-lost, and the ISR status line — is suppressed whenever
+                    any jamming mode is engaged, so the cockpit stays quiet during EW
+                    work. Threat alerts always fire; coalition broadcasts are unaffected.
+
+None of the cockpit messages leave the aircraft.
+
+
+EVERYONE ELSE ON BLUE  —  not in the C-130
+------------------------------------------
+Other flights never see the crew's working chatter. They get only the product:
+
+  Pushed automatically (no crew action needed):
+    F10 map marks    ELINT track markers, refreshed every 15s, plus permanent
+                     markers left after a lock. Show confidence, bearing/range with
+                     error margin, and bullseye once locked. Invisible to RED.
+    ELINT LOCK       Popup at 85%:  "RIVET ELINT LOCK: <system> (~10nm)".  25s.
+    PRECISE FIX      Popup at 100%: "RIVET PRECISE FIX: <system>".         25s.
+    SPOT JAM         While the crew spot-jams a site, the coalition is told when it is
+                     silenced. Fires once per state change, not per tick. The opening
+                     attempt is silent — the first call is the actionable one:
+                       "SPOT JAM: <system> SUPPRESSED (BE) — clear to engage"
+                       "SPOT JAM: <system> LIVE again (BE)"
+                       "SPOT JAM ENDED: <system> — may re-engage"
+                     All three broadcasts stay on screen for the full suppression window of
+                     that system (SA-10 = 30s, SA-11 = 40s, SA-15 = 45s, others = 60s).
+                     The "suppression lost" line only appears if a held site drops back
+                     (e.g. low capacity). Lets strikers time an ingress while down.
+
+  Pushed on crew request (whole coalition):
+    SIGINT report    Crew triggers it from the ISR menu; the full emitter list (sorted by
+                     threat then distance, with bullseyes) goes to ALL BLUE. 20s.
+
+  Sent on request (crew picks the recipient):
+    Handoff brief    Delivered to ONE friendly PLAYER group via Crew Coordination.
+                     Full EW status + SIGINT contacts + active tracks. 30s.
+                     No other group sees it.
+
+
+============================================================
+CONFIGURATION
+============================================================
+
+CFG_ block at top of script. No other edits needed.
+
+  CFG_jamMaxRange=370400m (~200nm cap)     CFG_jamFloorRange=46300m (~25nm, sea level)
+  CFG_jamProbBands=dist/prob table         CFG_crossBandPenalty=0.60
+  CFG_areaSpreadFactor=0.65   CFG_spotPunchThrough=0.50   CFG_drainPerSuppressed=0.5
+  CFG_spotMaxRange=185200m (~100nm, flat)     CFG_spotFullEff=129600m (~70nm)
+  CFG_lowCapWarnPct=0.20      CFG_maxTracks=3
+  CFG_trackMinTime=60s        CFG_trackMaxTime=360s       CFG_refinementMult=4
+  CFG_spoofZones=range/pk table
+  CFG_sweepInterval=5s        CFG_markRefreshInterval=15s
+  CFG_msgGap=10s              CFG_msgDur=15s
+
+
+============================================================
+NOTES
+============================================================
+
+  - Dynamic slots ignored. Static player slots only.
+  - Map marks BLUE only, invisible to RED.
+  - Missile spoofing applies to RED-fired missiles only.
+  - Suppressed SAMs stay online and keep tracking but are set to WEAPON_HOLD so they cannot
+    engage; ROE restores (OPEN_FIRE) when the jam window expires or the jammer leaves LOS.
+  - THREAT NEUTRALIZED only fires on destruction during active suppression, not on expiry.
+  - Auto-Triangulate resets to ON (default) on respawn. Toggle state does not persist across death.
+  - Suppression sets SAM ROE only (no emission toggling). If a mission also runs Skynet IADS,
+    both may contend for the same SAMs — expect reduced jamming effect in that case.
+
+ISR MISSION LOG
+---------------
+The log file is written every time a site reaches 100% precise fix confidence,
+so it is always current on disk — no formal mission end required. If you simply
+leave the server the file is already there.
+
+Location (auto-numbered, never overwrites a prior mission):
+  Saved Games\DCS\Logs\C130_ISR_Report_001.txt
+  Saved Games\DCS\Logs\C130_ISR_Report_002.txt  (and so on)
+
+Lists every radar site that reached 100% fix: system name, bullseye position,
+and mission clock (T+MM:SS) of the fix. Open in any text editor.
