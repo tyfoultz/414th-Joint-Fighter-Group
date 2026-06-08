@@ -1,8 +1,11 @@
-# 414st Joint Fighter Squadron — DCS Scripts Repository
+# 414th Joint Fighter Group — DCS Scripts & Missions
 
 ## What This Is
 
-Shared DCS World Lua scripts for the 414st Joint Fighter Squadron's multiplayer sessions. Scripts here are loaded into DCS missions via the Mission Editor and run server-side during gameplay.
+DCS World scripts and mission-building workspace for the 414th Joint Fighter Group. The repo has two layers:
+
+- **`scripts/` and `references/`** — shared on GitHub, collaborative
+- **`missions/`** — local only (gitignored), contains campaign plans, .miz files, and mission-specific docs that shouldn't be public
 
 ## DCS Scripting Environment
 
@@ -23,31 +26,25 @@ MOOSE-dependent scripts (`scripts/iads/`, `scripts/cap/`) will crash if Moose.lu
 
 ## Repository Structure
 
-### `scripts/iads/` — MANTIS IADS
+### `scripts/iads/` — MANTIS IADS (tracked)
 MOOSE MANTIS-based Integrated Air Defense System setup. Manages red SAM network behavior: detection intervals, max active sites, engagement ranges, auto-relocation.
 
-Key classes: `MANTIS`, `SET_GROUP`, `ZONE`.
-
-### `scripts/cap/` — AI A2A Dispatcher
+### `scripts/cap/` — AI A2A Dispatcher (tracked)
 MOOSE `AI_A2A_DISPATCHER` for red AI air defense. Layered CAP + GCI across inner/middle/outer rings of airbases. Manages squadron assignments, patrol orbits, engagement/disengage radii, replacement intervals.
 
-Key classes: `AI_A2A_DISPATCHER`, `DETECTION_AREAS`, `SET_GROUP`, `ZONE`, `ZONE_POLYGON`, `AIRBASE`, `TIMER`, `MESSAGE`.
+### `scripts/splash-damage/` — Splash Damage 3.4.2 (tracked)
+Third-party splash damage script by stevey9062. Main script loaded first; config override loaded second. See config file comments for every tunable.
 
-### `scripts/splash-damage/` — Splash Damage 3.4.2
-Third-party splash damage script by stevey9062. The main script (`Splash_Damage_3.4.2.lua`) is loaded first; the config override (`splash_damage_config.lua`) is loaded second and overrides defaults via `splash_damage_options.*` variables. See the config file's inline comments for every tunable.
+### `scripts/ew-jamming/` — Electronic Warfare (tracked)
 
-### `scripts/ew-jamming/` — Electronic Warfare
-
-Two independent EW systems:
-
-**EW Script 2.1** (`EW_script_2.1.lua`) — Original by ESA_Matador, adapted for Retribution by Drexyl. Defensive/offensive jamming via proximity bubble layers around designated jammer aircraft. Uses F10 radio menu activation. Standalone, no MOOSE dependency.
+**EW Script 2.1** (`EW_script_2.1.lua`) — Original by ESA_Matador, adapted for Retribution by Drexyl. Defensive/offensive jamming via proximity bubble layers. Standalone, no MOOSE dependency.
 
 **C-130J-30 Mission Systems** (`C-130J-30 Mission Systems.lua`) — ~2,000-line script turning the C-130J into an EC-130H Compass Call (EW) + RC-130H Rivet Joint (ISR) platform. Player-only, static slots only. Features:
 - EW: Area/directional/spot jamming, missile spoofing, energy management, pod loadout selection
 - ISR: Passive radar detection, two-phase ELINT tracking with map marks, auto-triangulation, SIGINT reports
 - Crew coordination: handoff briefs to friendly player groups
 
-**Read `C-130J-30 Mission Systems HANDOFF.md` before editing the C-130 script.** It contains the full architecture, hard constraints (no `enableEmission` toggling — it crashes), file structure, data tables, config knobs, and messaging conventions. The player-facing reference is `C-130J-30 Mission Systems Overview.txt` and must be kept in sync with code changes.
+**Read `C-130J-30 Mission Systems HANDOFF.md` before editing the C-130 script.** It contains the full architecture, hard constraints, file structure, data tables, config knobs, and messaging conventions. The player-facing reference is `C-130J-30 Mission Systems Overview.txt` — keep it in sync with code changes.
 
 Critical C-130 constraints:
 - Do NOT toggle SAM radar emissions (`enableEmission(false)` caused crashes). Suppression is ROE `WEAPON_HOLD` only.
@@ -55,11 +52,50 @@ Critical C-130 constraints:
 - Spot jamming has flat altitude-independent range. Don't add altitude gating.
 - Missile spoof curve is intentionally steep at close range. Don't flatten it.
 
+### `references/` — DCS & MOOSE Reference Docs (tracked)
+- `DCS_Instructions.md` — General DCS guidance (Chuck's Guides for modules, Retribution wiki)
+- `moose_tic_mantis_reference.md` — MOOSE framework + Troops in Contact + MANTIS IADS reference. Load when working with mission scripting, AI ground combat, or IADS setup.
+- `splash_damage_reference.html` — Splash Damage feature reference
+- `DCS User Manual EN.pdf` — Official DCS manual (gitignored due to size, local only)
+
+### `missions/` — Campaign & Mission Files (LOCAL ONLY, gitignored)
+
+**Not pushed to GitHub.** Contains campaign plans, narrative, .miz files, extracted mission data, and maps.
+
+#### `missions/operation-broken-chain/`
+4-mission campaign for the 414th JFG. Syria map, 16-25 human players, all red AI. Key files:
+- `operation_broken_chain.md` — Master campaign plan (narrative, force structure, taskings, mission design)
+- `sam_network.md` — SAM network layout, SEAD target list, ME unit compositions
+- `campaign_backstory.md` — Campaign narrative backstory
+- `campaign_brief.html` — Styled campaign briefing
+- `sam_threat_chart.html` — SAM threat visualization
+- `gci_cap_setup.md` — GCI/CAP design notes
+- `dispatcher_migration_plan.md` — Migration notes for the A2A dispatcher
+- `Syria_map_origin.jpg` — Annotated map (front line, blue/red territory)
+- `.miz` files — Mission Editor save files
+- `miz_*_extracted/` — Extracted mission internals for diffing/inspection
+
+Campaign decisions (defer to `operation_broken_chain.md` for full detail):
+- 4 missions: Cut the Path, The Run, Hold the Line, Counter-Punch
+- Front line at Turkish-Syrian border. Blue = Turkey + Cyprus + carrier. Red = all Syria.
+- Aleppo International is a blue pocket inside red territory
+- Minakh airfield is the FARP
+- Carrier in Eastern Med (~100-130nm from Aleppo)
+- Red airbases: Kuweires, Jirah, Abu al-Duhur, Taftanaz
+- Enemy: Syrian regime with Russian equipment, vanilla DCS units only
+- MOOSE available for scripting (MANTIS IADS, AI_A2A_DISPATCHER, optional TIC)
+- Cold start, day missions, fun over realism
+
+#### `missions/retribution/`
+Retribution dynamic campaign files and save comparisons.
+
 ## Agent Guidance
 
-1. **Read before editing.** These scripts run in a sandboxed Lua 5.1 environment with no way to test locally. Be conservative; prefer small, verifiable edits.
-2. **Preserve load order.** Function definitions must precede their callers. Check before moving code.
-3. **Vanilla DCS units only.** If you encounter a modded unit reference, flag it.
-4. **For MOOSE questions**, consult the MOOSE documentation (FlightControl-Master/MOOSE on GitHub). Key classes used here: MANTIS, AI_A2A_DISPATCHER, DETECTION_AREAS, SET_GROUP, ZONE, ZONE_POLYGON, TIMER, MESSAGE.
-5. **For the C-130 EW script**, always read the HANDOFF.md first. It's the authoritative developer reference.
-6. **Keep player-facing docs in sync.** If you change the C-130 script behavior, update the Overview.txt in the same change.
+1. **Read before editing.** Scripts run in sandboxed Lua 5.1 with no way to test locally. Be conservative; prefer small, verifiable edits.
+2. **Preserve load order.** Function definitions must precede their callers.
+3. **Vanilla DCS units only.** Flag any modded unit references.
+4. **For MOOSE questions**, consult `references/moose_tic_mantis_reference.md` first, then MOOSE GitHub docs.
+5. **For the C-130 EW script**, always read `scripts/ew-jamming/C-130J-30 Mission Systems HANDOFF.md` first.
+6. **For Operation Broken Chain**, defer to existing campaign decisions in `missions/operation-broken-chain/operation_broken_chain.md`. Flag inconsistencies before changing direction.
+7. **Keep player-facing docs in sync.** If you change C-130 script behavior, update the Overview.txt.
+8. **`missions/` is gitignored.** Never commit files from it. Scripts in `scripts/` are the shared, public layer.

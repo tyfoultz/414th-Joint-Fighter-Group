@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Splash Damage 3.4.2 — Configuration Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #07090a;
+    --bg2:       #0d1114;
+    --bg3:       #111820;
+    --border:    #1e2d3a;
+    --border2:   #243545;
+    --text:      #c8dde8;
+    --text-dim:  #6a8fa3;
+    --text-faint:#334455;
+    --accent:    #38bdf8;
+    --accent2:   #0ea5e9;
+    --glow:      rgba(56,189,248,0.12);
+
+    --cat-core:     #38bdf8;
+    --cat-damage:   #f87171;
+    --cat-cluster:  #f59e0b;
+    --cat-rocket:   #fb923c;
+    --cat-cascade:  #c084fc;
+    --cat-cargo:    #4ade80;
+    --cat-ord:      #60a5fa;
+    --cat-ground:   #2dd4bf;
+    --cat-napalm:   #f97316;
+    --cat-kill:     #818cf8;
+    --cat-ied:      #f87171;
+    --cat-murder:   #ef4444;
+    --cat-trophy:   #34d399;
+    --cat-crit:     #fbbf24;
+    --cat-death:    #fb923c;
+    --cat-cbu:      #a78bfa;
+    --cat-strobe:   #22d3ee;
+    --cat-tactical: #e879f9;
+    --cat-giant:    #ff6b6b;
+    --cat-debug:    #64748b;
+    --cat-retrib:   #94a3b8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(56,189,248,0.3);
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+  .header .version {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 3px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(56,189,248,0.06);
+  }
+
+  /* Nav */
+  .nav {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 30px;
+  }
+  .nav-title {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+  .nav-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover {
+    border-color: var(--border2);
+    background: rgba(56,189,248,0.08);
+  }
+  .nav-links a .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2px;
+    padding: 10px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+  }
+  .section-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+  .section-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    padding: 10px 16px 12px;
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    line-height: 1.6;
+  }
+
+  /* Table */
+  .config-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .config-table thead th {
+    background: var(--bg3);
+    color: var(--text-dim);
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .config-table thead th:nth-child(1) { width: 34%; }
+  .config-table thead th:nth-child(2) { width: 10%; }
+  .config-table thead th:nth-child(3) { width: 9%; }
+  .config-table thead th:nth-child(4) { width: 47%; }
+
+  .config-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .config-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  .config-table tbody tr:last-child { border-bottom: none; }
+  .config-table tbody tr:hover { background: rgba(56,189,248,0.07); }
+
+  .config-table td {
+    padding: 10px 14px;
+    vertical-align: top;
+  }
+  .config-table td:nth-child(1) {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #ffffff;
+    word-break: break-all;
+  }
+  .config-table td:nth-child(2) {
+    text-align: center;
+  }
+  .config-table td:nth-child(3) {
+    text-align: center;
+    font-size: 12px;
+  }
+  .config-table td:nth-child(4) {
+    color: #a8c4d4;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+
+  /* Value type badges */
+  .vtype {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .vtype-bool {
+    background: rgba(74,222,128,0.12);
+    color: #4ade80;
+    border: 1px solid rgba(74,222,128,0.25);
+  }
+  .vtype-num {
+    background: rgba(96,165,250,0.12);
+    color: #60a5fa;
+    border: 1px solid rgba(96,165,250,0.25);
+  }
+  .vtype-pct {
+    background: rgba(251,191,36,0.12);
+    color: #fbbf24;
+    border: 1px solid rgba(251,191,36,0.25);
+  }
+  .vtype-str {
+    background: rgba(232,121,249,0.12);
+    color: #e879f9;
+    border: 1px solid rgba(232,121,249,0.25);
+  }
+  .vtype-list {
+    background: rgba(192,132,252,0.12);
+    color: #c084fc;
+    border: 1px solid rgba(192,132,252,0.25);
+  }
+
+  .default-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #e8f0f6;
+    font-weight: 500;
+  }
+
+  /* Retribution badge */
+  .retrib-badge {
+    display: inline-block;
+    font-size: 9px;
+    padding: 0 5px;
+    border-radius: 2px;
+    background: rgba(148,163,184,0.12);
+    color: #94a3b8;
+    border: 1px solid rgba(148,163,184,0.2);
+    margin-left: 6px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+
+  /* Usage box */
+  .usage-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+  .usage-box h3 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .usage-box p, .usage-box li {
+    color: var(--text-dim);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .usage-box ol {
+    padding-left: 20px;
+  }
+  .usage-box li { margin-bottom: 4px; }
+  .usage-box code {
+    background: var(--bg3);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-bottom: 30px;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .legend-title {
+    width: 100%;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Splash Damage 3.4.2</h1>
+    <div class="subtitle">CONFIGURATION REFERENCE</div>
+    <div class="version">Standard With Ground Ordnance &mdash; by Stevey666</div>
+  </div>
+
+  <!-- USAGE -->
+  <div class="usage-box">
+    <h3>Mission Editor Setup</h3>
+    <ol>
+      <li>Add a <strong>Mission Start</strong> trigger &rarr; <code>DO SCRIPT FILE</code> &rarr; select <code>Splash_Damage_3.4.2.lua</code></li>
+      <li>Add a second <strong>Mission Start</strong> trigger &rarr; <code>DO SCRIPT FILE</code> &rarr; select <code>splash_damage_config.lua</code></li>
+    </ol>
+    <p style="margin-top:8px;">The first trigger loads the script with its defaults. The second overrides any values you want to change. When you re-select the file in the trigger, the .miz bundles a copy at that point &mdash; re-select after making changes.</p>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-title">Value Types</div>
+    <span class="vtype vtype-bool">true / false</span>
+    <span class="vtype vtype-num">number</span>
+    <span class="vtype vtype-pct">0.0 &ndash; 1.0</span>
+    <span class="vtype vtype-str">text</span>
+    <span class="vtype vtype-list">list</span>
+    <span class="retrib-badge">RET</span> <span style="color:var(--text-dim);font-size:11px;">= Exposed in Retribution UI</span>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-title">Jump to Section</div>
+    <div class="nav-links">
+      <a href="#debug"><span class="dot" style="background:var(--cat-debug)"></span>Debug &amp; Messages</a>
+      <a href="#core"><span class="dot" style="background:var(--cat-core)"></span>Core Explosions</a>
+      <a href="#damage"><span class="dot" style="background:var(--cat-damage)"></span>Damage Model</a>
+      <a href="#shaped"><span class="dot" style="background:var(--cat-rocket)"></span>Shaped Charge</a>
+      <a href="#rockets"><span class="dot" style="background:var(--cat-rocket)"></span>Rockets</a>
+      <a href="#cascade"><span class="dot" style="background:var(--cat-cascade)"></span>Cascading</a>
+      <a href="#cargo"><span class="dot" style="background:var(--cat-cargo)"></span>Cargo Cook-Off</a>
+      <a href="#allunits"><span class="dot" style="background:var(--cat-cargo)"></span>All-Vehicle Effects</a>
+      <a href="#advanced"><span class="dot" style="background:var(--cat-cargo)"></span>Advanced Sequences</a>
+      <a href="#ordnance"><span class="dot" style="background:var(--cat-ord)"></span>Ordnance Protection</a>
+      <a href="#cluster"><span class="dot" style="background:var(--cat-cluster)"></span>Cluster Bombs</a>
+      <a href="#giant"><span class="dot" style="background:var(--cat-giant)"></span>Giant Explosions</a>
+      <a href="#groundord"><span class="dot" style="background:var(--cat-ground)"></span>Ground Ordnance</a>
+      <a href="#napalm"><span class="dot" style="background:var(--cat-napalm)"></span>Napalm</a>
+      <a href="#killfeed"><span class="dot" style="background:var(--cat-kill)"></span>Kill Feed</a>
+      <a href="#ied"><span class="dot" style="background:var(--cat-ied)"></span>Vehicle IEDs</a>
+      <a href="#murder"><span class="dot" style="background:var(--cat-murder)"></span>Murder Mode</a>
+      <a href="#trophy"><span class="dot" style="background:var(--cat-trophy)"></span>Trophy APS</a>
+      <a href="#critical"><span class="dot" style="background:var(--cat-crit)"></span>Critical Component</a>
+      <a href="#death"><span class="dot" style="background:var(--cat-death)"></span>Explode on Death</a>
+      <a href="#cbu"><span class="dot" style="background:var(--cat-cbu)"></span>CBU Bomblet Spread</a>
+      <a href="#strobe"><span class="dot" style="background:var(--cat-strobe)"></span>Strobe Marker</a>
+      <a href="#tactical"><span class="dot" style="background:var(--cat-tactical)"></span>Tactical Explosion</a>
+      <a href="#retrib"><span class="dot" style="background:var(--cat-retrib)"></span>Retribution-Only</a>
+    </div>
+  </div>
+
+
+  <!-- ===== DEBUG & MESSAGES ===== -->
+  <div class="section" id="debug">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-debug)"></div>
+      <h2>Debug &amp; Messages</h2>
+    </div>
+    <div class="section-desc">Diagnostic output and on-screen notifications. All off by default for clean gameplay.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>game_messages <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Show on-screen text notifications when explosions occur</td></tr>
+        <tr><td>debug <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Output detailed diagnostics to DCS.log for troubleshooting</td></tr>
+        <tr><td>weapon_missing_message <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Alert when a fired weapon isn't in the explosion table (won't get splash damage)</td></tr>
+        <tr><td>damage_model_game_messages</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>On-screen messages when ground units get movement/weapons disabled by blast wave</td></tr>
+        <tr><td>track_pre_explosion_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Pre-explosion tracking diagnostics</td></tr>
+        <tr><td>track_groundunitordnance_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Ground unit ordnance tracking diagnostics</td></tr>
+        <tr><td>napalm_unitdamage_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Napalm unit damage diagnostics</td></tr>
+        <tr><td>killfeed_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Kill feed tracking diagnostics</td></tr>
+        <tr><td>events_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>All event handler logging &mdash; very noisy, logs every DCS event</td></tr>
+        <tr><td>vehicleied_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Vehicle IED event diagnostics</td></tr>
+        <tr><td>MurderMode_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Murder Mode diagnostics</td></tr>
+        <tr><td>trophy_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Trophy APS diagnostics</td></tr>
+        <tr><td>cargocookoff_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Cargo cook-off diagnostics</td></tr>
+        <tr><td>CriticalComponent_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Critical Component hit diagnostics</td></tr>
+        <tr><td>GU_Explode_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Ground Unit Explode on Death diagnostics</td></tr>
+        <tr><td>CBU_Bomblet_Hit_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>CBU bomblet hit spread diagnostics</td></tr>
+        <tr><td>StrobeMarker_debug</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Strobe Marker diagnostics</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== RADIO ===== -->
+  <div class="section" id="core">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-core)"></div>
+      <h2>Core Explosion Behavior</h2>
+    </div>
+    <div class="section-desc">The main splash damage engine. Wave explosions and larger explosions are the two primary mechanisms that make ordnance feel impactful.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>enable_radio_menu <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Adds F10 radio menu to tweak splash settings in-game without editing the script</td></tr>
+        <tr><td>wave_explosions <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Blast wave: spawns secondary explosions on objects radiating outward from impact, scaled by object size and distance. The core feature.</td></tr>
+        <tr><td>larger_explosions <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Adds an extra explosion at the weapon impact point using per-weapon values from the built-in explosion table</td></tr>
+        <tr><td>use_dynamic_blast_radius <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Calculate blast radius from weapon explosive power. If false, uses the fixed blast_search_radius instead.</td></tr>
+        <tr><td>dynamic_blast_radius_modifier <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">2</td><td>Multiplier applied to the dynamically calculated blast radius. Higher = bigger blast area. Retribution divides UI value by 100.</td></tr>
+        <tr><td>blast_search_radius</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">90</td><td>Fixed blast wave search radius in meters. Only used if use_dynamic_blast_radius is false.</td></tr>
+        <tr><td>overall_scaling <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Global multiplier on all explosive power in the script. Scales everything up or down. Retribution divides UI value by 100.</td></tr>
+        <tr><td>only_players_weapons</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>If true, only tracks weapons launched by human players. AI weapons won't get splash damage.</td></tr>
+        <tr><td>blast_stun</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Not yet implemented. Placeholder for future stun mechanic.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== DAMAGE MODEL ===== -->
+  <div class="section" id="damage">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-damage)"></div>
+      <h2>Damage Model &amp; Health Thresholds</h2>
+    </div>
+    <div class="section-desc">Controls how blast waves affect ground unit functionality. When enabled, units below certain health thresholds lose the ability to move or fire.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>damage_model <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Allow blast wave to disable ground unit movement and weapons based on health thresholds</td></tr>
+        <tr><td>static_damage_boost <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">2000</td><td>Extra damage applied to structures/buildings from wave explosions. DCS buildings are tanky; raise this to make bombs more effective vs structures.</td></tr>
+        <tr><td>unit_disabled_health <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">%</span></td><td class="default-val">30</td><td>Below this HP%, ground unit loses ability to move</td></tr>
+        <tr><td>unit_cant_fire_health <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">%</span></td><td class="default-val">40</td><td>Below this HP%, ground unit ROE set to HOLD (simulates damaged weapon systems)</td></tr>
+        <tr><td>infantry_cant_fire_health <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">%</span></td><td class="default-val">60</td><td>Below this HP%, infantry ROE set to HOLD (higher threshold because infantry are fragile)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== SHAPED CHARGE ===== -->
+  <div class="section" id="shaped">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-rocket)"></div>
+      <h2>Shaped Charge</h2>
+    </div>
+    <div class="section-desc">Reduces blast radius for shaped charge munitions (ATGMs, Mavericks, etc.) since they focus energy forward, not outward.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>apply_shaped_charge_effects</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Apply blast radius reduction to shaped charge munitions</td></tr>
+        <tr><td>shaped_charge_multiplier</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.2</td><td>How much to reduce blast radius and power (0.2 = 80% reduction)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== ROCKETS ===== -->
+  <div class="section" id="rockets">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-rocket)"></div>
+      <h2>Rockets</h2>
+    </div>
+    <div class="section-desc">Rockets are underpowered in DCS by default. This multiplier boosts their explosive values from the table.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>rocket_multiplier <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1.3</td><td>Multiplied by the explTable value for rockets. Higher = rockets hit harder.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== CASCADING ===== -->
+  <div class="section" id="cascade">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-cascade)"></div>
+      <h2>Cascading Explosions</h2>
+    </div>
+    <div class="section-desc">Chain reactions when damaged units near the blast catch secondary explosions. Controls how aggressively damaged vehicles pop.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>cascade_scaling</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">2</td><td>Multiplier for secondary cascade blast damage. 1 fades too fast; 2&ndash;3 gives a good chain reaction.</td></tr>
+        <tr><td>cascade_damage_threshold</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.1</td><td>Minimum calculated blast damage to trigger a cascade explosion. Too low = small pops far from impact look wrong.</td></tr>
+        <tr><td>cascade_explode_threshold</td><td><span class="vtype vtype-num">%</span></td><td class="default-val">60</td><td>Unit must be at or below this HP% to cascade. Lets jeeps chain-explode while tanks survive.</td></tr>
+        <tr><td>always_cascade_explode</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Everything in the blast chain-explodes regardless of health. Original script behavior.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== CARGO COOK-OFF ===== -->
+  <div class="section" id="cargo">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-cargo)"></div>
+      <h2>Cargo Cook-Off &amp; Fuel Explosions</h2>
+    </div>
+    <div class="section-desc">Fuel trucks erupt in fireballs, ammo trucks cook off with secondary pops and debris. Vehicles in the cargoUnits table get unique per-type effects.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>track_pre_explosion</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Track unit state before explosions. Required for cook-off to detect health changes. Keep same as enable_cargo_effects.</td></tr>
+        <tr><td>enable_cargo_effects</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Master toggle for cargo explosions and cook-offs on vehicles in the cargoUnits table</td></tr>
+        <tr><td>cargo_effects_chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">1</td><td>Chance cargo effects trigger (1 = 100%)</td></tr>
+        <tr><td>cargo_damage_threshold</td><td><span class="vtype vtype-num">%</span></td><td class="default-val">25</td><td>HP% below which cargo explodes. 0 = only on full destruction.</td></tr>
+        <tr><td>debris_effects</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Debris flies outward from cook-offs</td></tr>
+        <tr><td>debris_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Explosive power of each debris piece</td></tr>
+        <tr><td>debris_count_min</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">6</td><td>Minimum debris pieces per cook-off</td></tr>
+        <tr><td>debris_count_max</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">12</td><td>Maximum debris pieces per cook-off</td></tr>
+        <tr><td>debris_max_distance</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">8</td><td>Max distance debris travels. Min distance = 10% of this value.</td></tr>
+        <tr><td>cookoff_flares_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Phosphor-style flare sparks shoot out during cook-offs. Applies to all vehicles.</td></tr>
+        <tr><td>cookoff_flare_color</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">2</td><td>Flare color index</td></tr>
+        <tr><td>cookoff_flare_instant</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>If true, all flares spawn instantly. If false, they spawn over time.</td></tr>
+        <tr><td>cookoff_flare_instant_min</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">2</td><td>Minimum instant flares</td></tr>
+        <tr><td>cookoff_flare_instant_max</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">5</td><td>Maximum instant flares</td></tr>
+        <tr><td>cookoff_flare_count_modifier</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Multiplier for non-instant flare count (from the vehicle table's cookOffCount)</td></tr>
+        <tr><td>cookoff_flare_offset</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">0.5</td><td>Max horizontal offset for flare spawn position</td></tr>
+        <tr><td>cookoff_flare_chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.5</td><td>Chance flares fire during a cook-off</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== ALL-VEHICLE EFFECTS ===== -->
+  <div class="section" id="allunits">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-cargo)"></div>
+      <h2>All-Vehicle Smoke &amp; Cook-Off</h2>
+    </div>
+    <div class="section-desc">Extends smoke and cook-off effects to ALL ground vehicles, not just those in the cargoUnits table. Units named "CookOffTarget" force-trigger these effects.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>smokeandcookoffeffectallvehicles</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Enable smoke/cook-off for all ground vehicles not in the cargoUnits table</td></tr>
+        <tr><td>allunits_enable_smoke</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Enable smoke effects for all vehicles</td></tr>
+        <tr><td>allunits_enable_cookoff</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Enable cook-off effects for all vehicles</td></tr>
+        <tr><td>allunits_damage_threshold</td><td><span class="vtype vtype-num">%</span></td><td class="default-val">25</td><td>HP% below which effects try to trigger</td></tr>
+        <tr><td>allunits_explode_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">40</td><td>Initial vehicle explosion power</td></tr>
+        <tr><td>allunits_default_flame_size</td><td><span class="vtype vtype-num">1&ndash;8</span></td><td class="default-val">6</td><td>Smoke size. 1&ndash;4 = smoke+fire (small&rarr;huge), 5&ndash;8 = smoke only (small&rarr;huge)</td></tr>
+        <tr><td>allunits_default_flame_duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">240</td><td>How long smoke persists</td></tr>
+        <tr><td>allunits_cookoff_count</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4</td><td>Number of cook-off pops scheduled per vehicle</td></tr>
+        <tr><td>allunits_cookoff_duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">30</td><td>Time window over which cook-off pops are randomly spread</td></tr>
+        <tr><td>allunits_cookoff_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">10</td><td>Explosive power of each cook-off pop</td></tr>
+        <tr><td>allunits_cookoff_powerrandom</td><td><span class="vtype vtype-num">%</span></td><td class="default-val">50</td><td>Random variance on cook-off power (+/&minus; this percentage)</td></tr>
+        <tr><td>allunits_cookoff_chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.4</td><td>Chance of cook-off occurring (0.4 = 40%)</td></tr>
+        <tr><td>allunits_smokewithcookoff</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Automatically add smoke whenever a cook-off triggers</td></tr>
+        <tr><td>allunits_smoke_chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.7</td><td>Chance of smoke-only effect (if cook-off doesn't trigger)</td></tr>
+        <tr><td>allunits_explode_on_smoke_only</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>If smoke-only, still add an explosion to finish the vehicle off</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== ADVANCED EFFECT SEQUENCE ===== -->
+  <div class="section" id="advanced">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-cargo)"></div>
+      <h2>Advanced Effect Sequences</h2>
+    </div>
+    <div class="section-desc">Scripted multi-phase timelines: e.g., medium fire &rarr; large smoke &rarr; medium smoke &rarr; small smoke over 10+ minutes. Overrides standard cook-off when triggered. Force on any unit by putting "AdvSeq" in its name.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>allunits_advanced_effect_sequence</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Enable advanced effect sequences (overrides standard cook-off when triggered)</td></tr>
+        <tr><td>allunits_advanced_effect_sequence_chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.2</td><td>Chance this triggers instead of standard effects (0.2 = 20%)</td></tr>
+        <tr><td>allunits_advanced_effect_force_on_name</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Force advanced sequence on units with "AdvSeq" in name (ignores chance)</td></tr>
+        <tr><td>allunits_advanced_effect_order</td><td><span class="vtype vtype-list">list</span></td><td class="default-val">{"2","7","6","5"}</td><td>Sequence of effect sizes. 1&ndash;4 = smoke+fire, 5&ndash;8 = smoke only (small&rarr;huge)</td></tr>
+        <tr><td>allunits_advanced_effect_timing</td><td><span class="vtype vtype-list">list</span></td><td class="default-val">{"30","90","120","600"}</td><td>Duration in seconds for each step in the order above</td></tr>
+        <tr><td>allunits_advanced_effect_cookoff_chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">1</td><td>Chance of cook-off pops during advanced sequence</td></tr>
+        <tr><td>allunits_advanced_effect_cookoff_count</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4</td><td>Number of cook-off pops in the sequence</td></tr>
+        <tr><td>allunits_advanced_effect_cookoff_duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">30</td><td>Time window for cook-off pops</td></tr>
+        <tr><td>allunits_advanced_effect_cookoff_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">10</td><td>Power of each cook-off pop</td></tr>
+        <tr><td>allunits_advanced_effect_cookoff_powerrandom</td><td><span class="vtype vtype-num">%</span></td><td class="default-val">50</td><td>Random variance (+/&minus; %)</td></tr>
+        <tr><td>allunits_advanced_effect_cookoff_flares_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Phosphor-style signal flares during advanced sequence</td></tr>
+        <tr><td>allunits_advanced_effect_explode_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">40</td><td>Initial explosion power in advanced sequence</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== ORDNANCE PROTECTION ===== -->
+  <div class="section" id="ordnance">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-ord)"></div>
+      <h2>Ordnance Protection</h2>
+    </div>
+    <div class="section-desc">Prevents bombs dropped in a stick from detonating each other mid-air. Without this, the first bomb's splash kills the second bomb before it hits the ground.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>ordnance_protection <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Shield nearby falling ordnance from sibling bomb explosions</td></tr>
+        <tr><td>ordnance_protection_radius <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">20</td><td>Radius around an explosion to protect other falling bombs. Retribution uses 800.</td></tr>
+        <tr><td>detect_ordnance_destruction <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Detect when a bomb is destroyed mid-air by another explosion</td></tr>
+        <tr><td>snap_to_ground_if_destroyed_by_large_explosion <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>If a bomb IS fratricide'd mid-air, place its explosion on the ground anyway</td></tr>
+        <tr><td>max_snapped_height <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">80</td><td>Only snap-to-ground if the destroyed bomb was below this AGL</td></tr>
+        <tr><td>recent_large_explosion_snap <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Check for a recent nearby script explosion before snapping (prevents duplicate booms)</td></tr>
+        <tr><td>recent_large_explosion_range <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">100</td><td>Radius to check for a recent explosion</td></tr>
+        <tr><td>recent_large_explosion_time <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">4</td><td>How far back in time to look for a recent explosion</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== CLUSTER BOMBS ===== -->
+  <div class="section" id="cluster">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-cluster)"></div>
+      <h2>Cluster Bomb Spread Simulation</h2>
+    </div>
+    <div class="section-desc">Simulates cluster bomb submunition spread across an area. Spawns bomblet explosions in a forward-biased ellipse pattern around impact.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>cluster_enabled <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for cluster bomb spread simulation</td></tr>
+        <tr><td>cluster_bomblet_reductionmodifier <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Use equation to reduce bomblet count so it looks realistic instead of overwhelming</td></tr>
+        <tr><td>cluster_bomblet_damage_modifier <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Global multiplier for individual bomblet explosive power</td></tr>
+        <tr><td>cluster_base_length</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">150</td><td>Base forward spread distance</td></tr>
+        <tr><td>cluster_base_width</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">200</td><td>Base lateral spread distance</td></tr>
+        <tr><td>cluster_max_length</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">300</td><td>Maximum forward spread</td></tr>
+        <tr><td>cluster_max_width</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">400</td><td>Maximum lateral spread</td></tr>
+        <tr><td>cluster_min_length</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">100</td><td>Minimum forward spread</td></tr>
+        <tr><td>cluster_min_width</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">150</td><td>Minimum lateral spread</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== GIANT EXPLOSIONS ===== -->
+  <div class="section" id="giant">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-giant)"></div>
+      <h2>Giant Explosions</h2>
+    </div>
+    <div class="section-desc">Spectacular multi-explosion destruction for named targets. Name a unit "GiantExplosionTarget(X)" in the ME to enable. Great for ammo dumps, fuel depots, or mission objectives.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>giant_explosion_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for giant explosions</td></tr>
+        <tr><td>giant_explosion_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">6000</td><td>Power in kg of TNT equivalent</td></tr>
+        <tr><td>giant_explosion_scale</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Visual size scale factor</td></tr>
+        <tr><td>giant_explosion_duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">3.0</td><td>Total duration of the explosion sequence</td></tr>
+        <tr><td>giant_explosion_count</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">250</td><td>Number of sub-explosions in the effect</td></tr>
+        <tr><td>giantexplosion_ondamage</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Trigger when unit is damaged (not just destroyed)</td></tr>
+        <tr><td>giantexplosion_ondeath</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Trigger when unit is destroyed</td></tr>
+        <tr><td>giantexplosion_testmode</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Adds F10 radio commands for testing giant explosions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== GROUND ORDNANCE ===== -->
+  <div class="section" id="groundord">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-ground)"></div>
+      <h2>Ground &amp; Ship Ordnance</h2>
+    </div>
+    <div class="section-desc">Applies splash damage effects to shells fired by ground units (tanks, artillery, ships). Makes ground combat more dynamic and lethal.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>track_groundunitordnance</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Track ground unit shells for splash effects and blast wave cook-offs</td></tr>
+        <tr><td>groundunitordnance_damage_modifier <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1.0</td><td>Multiplier for ground unit shell explosive power</td></tr>
+        <tr><td>groundunitordnance_blastwave_modifier <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4.0</td><td>Additional multiplier for blast wave intensity from ground shells</td></tr>
+        <tr><td>groundunitordnance_maxtrackedcount</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">100</td><td>Max shells tracked at once (performance limiter to prevent overload)</td></tr>
+        <tr><td>scan_50m_for_groundordnance</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Use fixed 50m scan radius for ground shells instead of dynamic blast radius</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== NAPALM ===== -->
+  <div class="section" id="napalm">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-napalm)"></div>
+      <h2>Napalm</h2>
+    </div>
+    <div class="section-desc">Spawns fuel tank objects along a line, detonates them to create a fire trail with persistent flames, phosphor sparks, and area damage. Works with MK-77 by default; can override other weapons to act as napalm.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>napalm_mk77_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Enable napalm effects for MK-77 mod 0 and mod 1 bombs</td></tr>
+        <tr><td>napalmoverride_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Enable napalm effects for custom weapons listed below</td></tr>
+        <tr><td>napalm_override_weapons</td><td><span class="vtype vtype-str">text</span></td><td class="default-val">"Mk_82,SAMP125LD"</td><td>Comma-separated weapon names to treat as napalm. Don't use CBUs.</td></tr>
+        <tr><td>napalm_spread_points</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4</td><td>Fireball spawn points per bomb (more = longer fire line)</td></tr>
+        <tr><td>napalm_spread_spacing</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">25</td><td>Distance between fireballs along the line</td></tr>
+        <tr><td>napalm_phosphor_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>White phosphor-style spark flares around napalm</td></tr>
+        <tr><td>napalm_phosphor_multiplier</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.5</td><td>Multiplier for phosphor flare count (with some built-in randomness)</td></tr>
+        <tr><td>napalm_addflame</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Persistent fire effect at napalm points</td></tr>
+        <tr><td>napalm_addflame_size</td><td><span class="vtype vtype-num">1&ndash;8</span></td><td class="default-val">3</td><td>Flame size (1&ndash;4 = fire+smoke, 5&ndash;8 = smoke only)</td></tr>
+        <tr><td>napalm_addflame_duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">180</td><td>How long fire burns</td></tr>
+        <tr><td>napalm_flame_delay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">0.01</td><td>Delay before flame spawns</td></tr>
+        <tr><td>napalm_explode_delay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">0.01</td><td>Delay before ground explosion detonates the spawned fuel tank</td></tr>
+        <tr><td>napalm_destroy_delay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">0.02</td><td>Delay before the fuel tank prop is cleaned up</td></tr>
+        <tr><td>napalm_doublewide_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Double-width napalm: two fire points per spread point (~28m wide)</td></tr>
+        <tr><td>napalm_doublewide_spread</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">15</td><td>Meters to each side for double-wide mode</td></tr>
+        <tr><td>napalm_unitdamage_enable</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Napalm damages units in the fire zone</td></tr>
+        <tr><td>napalm_unitdamage_scandistance</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">70</td><td>Scan radius for napalm area damage</td></tr>
+        <tr><td>napalm_unitdamage_startdelay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">0.1</td><td>Delay between napalm landing and damage starting</td></tr>
+        <tr><td>napalm_unitdamage_spreaddelay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">0</td><td>Gap between per-unit damage ticks (ordered by distance)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== KILL FEED ===== -->
+  <div class="section" id="killfeed">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-kill)"></div>
+      <h2>Kill Feed</h2>
+    </div>
+    <div class="section-desc">Tracks and displays kills attributed to splash damage. MP only (host local SP as MP to test). Required for Lekas Foothold point integration.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>killfeed_enable</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for kill feed tracking</td></tr>
+        <tr><td>killfeed_game_messages</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Show kill messages on screen</td></tr>
+        <tr><td>killfeed_game_message_duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">15</td><td>How long kill messages stay on screen</td></tr>
+        <tr><td>killfeed_splashdelay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">8</td><td>Wait time to let DCS register kills before attributing to splash</td></tr>
+        <tr><td>killfeed_lekas_foothold_integration</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Feed splash kills into Lekas Foothold point system</td></tr>
+        <tr><td>killfeed_lekas_contribution_delay</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">240</td><td>Delay before processing splash kills into Lekas contributions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== VEHICLE IEDs ===== -->
+  <div class="section" id="ied">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-ied)"></div>
+      <h2>Vehicle IEDs</h2>
+    </div>
+    <div class="section-desc">Units with "VehicleIEDTarget" or "VBID" in their name trigger a massive explosion when hit or destroyed. Great for ambush scenarios or objective defense.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>vehicleied_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for Vehicle IED feature</td></tr>
+        <tr><td>vehicleied_targetname</td><td><span class="vtype vtype-str">text</span></td><td class="default-val">"VehicleIEDTarget,VBID"</td><td>Comma-separated name triggers (unit name must contain one of these)</td></tr>
+        <tr><td>vehicleied_scaling</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Global scaling for all IED explosion values</td></tr>
+        <tr><td>vehicleied_central_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">600</td><td>Central explosion power</td></tr>
+        <tr><td>vehicleied_explosion_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">400</td><td>Secondary explosion base power</td></tr>
+        <tr><td>vehicleied_explosion_count_min</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">10</td><td>Min number of secondary explosions</td></tr>
+        <tr><td>vehicleied_explosion_count_max</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">14</td><td>Max number of secondary explosions</td></tr>
+        <tr><td>vehicleied_power_variance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.3</td><td>Random power variance (+/&minus; 30%)</td></tr>
+        <tr><td>vehicleied_radius</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">35</td><td>Max radius for secondary explosions</td></tr>
+        <tr><td>vehicleied_explosion_delay_max</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.4</td><td>Max delay multiplier for staggered secondaries</td></tr>
+        <tr><td>vehicleied_fueltankspawn</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Spawn fuel tank for fire/smoke visual effect</td></tr>
+        <tr><td>vehicleied_destroy_vehicle</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Instantly destroy the vehicle (can cause ghost smoke glitch)</td></tr>
+        <tr><td>vehicleied_explode_on_hit</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Explode on hit event (false = only on death/vehicle stops)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== MURDER MODE ===== -->
+  <div class="section" id="murder">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-murder)"></div>
+      <h2>Murder Mode</h2>
+    </div>
+    <div class="section-desc">Adds an explosion to every hit event from an A-10 or a unit with "MurderMode" in the pilot name. Makes the GAU-8 devastating.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>A10MurderMode</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Every A-10 hit spawns an explosion on the target</td></tr>
+        <tr><td>A10MurderMode_Power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">5</td><td>Explosion power per A-10 hit</td></tr>
+        <tr><td>A10MurderMode__Chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">1</td><td>Chance per hit (1 = 100%)</td></tr>
+        <tr><td>NamedUnitMurderMode</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Same as above but for any unit with "MurderMode" in pilot name</td></tr>
+        <tr><td>NamedUnitMurderMode_Power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">5</td><td>Explosion power per named unit hit</td></tr>
+        <tr><td>NamedUnitMurderMode_Chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">1</td><td>Chance per hit (1 = 100%)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== TROPHY APS ===== -->
+  <div class="section" id="trophy">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-trophy)"></div>
+      <h2>Trophy Active Protection System</h2>
+    </div>
+    <div class="section-desc">Simulates Trophy APS on named vehicles. Tracks incoming weapons and intercepts them with a small explosion. Two launchers (front-right, back-left) with limited rounds. Name a unit "TrophyAPS" to enable.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>trophy_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for Trophy APS</td></tr>
+        <tr><td>trophy_selfExplosionSize</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Explosion at launcher point (mimics Trophy firing)</td></tr>
+        <tr><td>trophy_explosionOffsetDistance</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">2</td><td>Launcher offset from vehicle center</td></tr>
+        <tr><td>trophy_weaponExplosionSize</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">20</td><td>Explosion size to destroy incoming weapon</td></tr>
+        <tr><td>trophy_detectRange</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">200</td><td>Detection range &mdash; speeds up position checks when weapon enters this radius</td></tr>
+        <tr><td>trophy_interceptRange</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">30</td><td>Interception range. 20 is more realistic but may miss fast missiles.</td></tr>
+        <tr><td>trophy_frontRightRounds</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4</td><td>Initial rounds in front-right launcher</td></tr>
+        <tr><td>trophy_backLeftRounds</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4</td><td>Initial rounds in back-left launcher</td></tr>
+        <tr><td>trophy_failureChance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.00</td><td>Chance interception fails (0.05 = 5%)</td></tr>
+        <tr><td>trophy_markShooterOrigin</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Mark shooter origin with a point on the F10 map</td></tr>
+        <tr><td>trophy_drawOriginLine</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Draw line from tank to shooter on F10 map</td></tr>
+        <tr><td>trophy_maxMapMarkerDistance</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">1000</td><td>Max distance for map marker and line</td></tr>
+        <tr><td>trophy_markerDuration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">120</td><td>How long map markers persist</td></tr>
+        <tr><td>trophy_showInterceptionMessage</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Show interception message on screen</td></tr>
+        <tr><td>trophy_messageDuration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">10</td><td>How long interception message displays</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== CRITICAL COMPONENT ===== -->
+  <div class="section" id="critical">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-crit)"></div>
+      <h2>Critical Component Damage</h2>
+    </div>
+    <div class="section-desc">Random chance that any single hit instantly kills a vehicle &mdash; simulates ammo rack cook-off, lucky shot through armor, etc. Can be limited to specific weapon types.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>CriticalComponent <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for critical component hits</td></tr>
+        <tr><td>CriticalComponent_Chance <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.01</td><td>Probability per hit event (0.01 = 1%)</td></tr>
+        <tr><td>CriticalComponent_Explosion_Power <span class="retrib-badge">RET</span></td><td><span class="vtype vtype-num">number</span></td><td class="default-val">50</td><td>Size of the explosion when a critical hit triggers</td></tr>
+        <tr><td>CriticalComponent_Specific_Weapons_Only</td><td><span class="vtype vtype-list">list</span></td><td class="default-val">{"GAU8_30_HE", ...}</td><td>Limit crits to these weapon types only. Empty table {} = all weapons.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== GROUND UNIT EXPLODE ON DEATH ===== -->
+  <div class="section" id="death">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-death)"></div>
+      <h2>Ground Unit Explode on Death</h2>
+    </div>
+    <div class="section-desc">When a vehicle starts its burning/dying animation, a chance to trigger an explosion immediately rather than waiting for the slow pop. Units with "GUED" in their name always trigger regardless of chance.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>GU_Explode_on_Death</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Trigger explosion at the start of the vehicle's burning/dying phase</td></tr>
+        <tr><td>GU_Explode_on_Death_Chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.5</td><td>Chance the explosion triggers (0.5 = 50%)</td></tr>
+        <tr><td>GU_Explode_on_Death_Explosion_Power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">30</td><td>Explosion power</td></tr>
+        <tr><td>GU_Explode_on_Death_Height</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">1</td><td>Height above vehicle coords. Low = more dirt kick-up; high = smoke puff.</td></tr>
+        <tr><td>GU_Explode_Exclude_Infantry</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Exclude infantry from this feature (false = infantry pop too)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== CBU BOMBLET HIT SPREAD ===== -->
+  <div class="section" id="cbu">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-cbu)"></div>
+      <h2>CBU Bomblet Hit Spread</h2>
+    </div>
+    <div class="section-desc">On a cluster bomb hit event, scans the area for nearby vehicles and triggers additional explosions on them. Helps wipe out dispersed groups. Primarily tested with JSOW-A. Not applied to CBU-97/105 (already effective).</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>CBU_Bomblet_Hit_Explosion</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for CBU bomblet hit spread</td></tr>
+        <tr><td>CBU_Bomblet_Hit_Explosion_Scaling</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">35</td><td>Overall damage multiplier for bomblet hits</td></tr>
+        <tr><td>CBU_Bomblet_Hit_Mimic_Spread</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">true</td><td>Scan area around hit target for additional units to damage</td></tr>
+        <tr><td>CBU_Bomblet_Hit_Spread</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">50</td><td>Primary scan radius from hit unit</td></tr>
+        <tr><td>CBU_Bomblet_Hit_Spread_SecondaryScan</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">50</td><td>Secondary scan from each found unit</td></tr>
+        <tr><td>CBU_Bomblet_Hit_Spread_Duration</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">2</td><td>Spread additional explosions over this time window</td></tr>
+        <tr><td>CBU_Bomblet_NonArmored_Dmg_Modifier</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1.0</td><td>Damage multiplier vs unarmored targets (trucks, infantry)</td></tr>
+        <tr><td>CBU_Bomblet_LightlyArmored_Dmg_Modifier</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.8</td><td>Damage multiplier vs light armor (BTR-80, ZSU-23-4)</td></tr>
+        <tr><td>CBU_Bomblet_Armored_Dmg_Modifier</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.6</td><td>Damage multiplier vs heavy armor (T-90, BMP-3)</td></tr>
+        <tr><td>CBU_Bomblet_Hit_Chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.8</td><td>Chance a found unit gets hit (0.8 = 80%)</td></tr>
+        <tr><td>CBU_Bomblet_Indirect_Hit_Chance</td><td><span class="vtype vtype-pct">0.0&ndash;1.0</span></td><td class="default-val">0.2</td><td>Chance the hit is indirect/glancing</td></tr>
+        <tr><td>CBU_Bomblet_Indirect_Dmg_Modifier</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.4</td><td>Damage reduction for indirect hits (0.4 = 40% of full damage)</td></tr>
+        <tr><td>CBU_Bomblet_Explosion_Height</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">0.1</td><td>Height offset for bomblet explosions above ground</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== STROBE MARKER ===== -->
+  <div class="section" id="strobe">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-strobe)"></div>
+      <h2>Strobe Marker / Beacon</h2>
+    </div>
+    <div class="section-desc">Generates a tiny repeating explosion above units with "Strobe" in the name. Visible to eye and FLIR/TV, but not IR. Audible up close. Good for FAC target marking. Enable only ONE method at a time.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>StrobeMarker_allstrobeunits</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Auto-strobe all living, active units with "Strobe" in name</td></tr>
+        <tr><td>StrobeMarker_individuals</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Enable/disable individual strobes via F10 radio commands</td></tr>
+        <tr><td>StrobeMarker_interval</td><td><span class="vtype vtype-num">seconds</span></td><td class="default-val">2</td><td>Time between strobe flashes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== TACTICAL EXPLOSION ===== -->
+  <div class="section" id="tactical">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-tactical)"></div>
+      <h2>Tactical Explosion</h2>
+    </div>
+    <div class="section-desc">Large scripted multi-explosion effect, similar to Vehicle IED but bigger. Can be assigned to specific weapons (e.g., Tomahawks) or triggered on named units. Only fires below a configurable altitude.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>tactical_explosion</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Master toggle for tactical explosions</td></tr>
+        <tr><td>tactical_explosion_override_enabled</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Enable weapon override list</td></tr>
+        <tr><td>tactical_explosion_override_weapons</td><td><span class="vtype vtype-str">text</span></td><td class="default-val">"BGM_109B,Mk_82"</td><td>Comma-separated weapon names to trigger tactical explosion</td></tr>
+        <tr><td>tactical_explosion_max_height</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">40</td><td>Only trigger below this altitude AGL</td></tr>
+        <tr><td>tactical_explosion_scaling</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1</td><td>Global scaling for all tactical explosion values</td></tr>
+        <tr><td>tactical_explosion_central_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">4000</td><td>Central explosion power</td></tr>
+        <tr><td>tactical_explosion_explosion_power</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">1000</td><td>Secondary explosion base power</td></tr>
+        <tr><td>tactical_explosion_explosion_count_min</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">35</td><td>Min secondary explosions</td></tr>
+        <tr><td>tactical_explosion_explosion_count_max</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">35</td><td>Max secondary explosions</td></tr>
+        <tr><td>tactical_explosion_radius</td><td><span class="vtype vtype-num">meters</span></td><td class="default-val">100</td><td>Max radius for secondary explosions</td></tr>
+        <tr><td>tactical_explosion_explosion_delay_max</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">0.4</td><td>Max delay multiplier for staggered secondaries</td></tr>
+        <tr><td>tactical_explosion_fueltankspawn</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Spawn fuel tank for fire/smoke visual</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== RETRIBUTION-ONLY ===== -->
+  <div class="section" id="retrib">
+    <div class="section-header">
+      <div class="section-dot" style="background:var(--cat-retrib)"></div>
+      <h2>Retribution-Specific Settings</h2>
+    </div>
+    <div class="section-desc">These settings appear in the Retribution UI and are added by the Retribution fork of the script. They may not exist in the vanilla GitHub release.</div>
+    <table class="config-table">
+      <thead><tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>shipRadarDamageEnable</td><td><span class="vtype vtype-bool">true/false</span></td><td class="default-val">false</td><td>Allow anti-radiation missiles (HARMs) to damage/disable ship radar systems</td></tr>
+        <tr><td>oca_aircraft_damage_boost</td><td><span class="vtype vtype-num">number</span></td><td class="default-val">3000</td><td>Extra damage applied to parked aircraft from wave explosions (OCA/airfield attack scenarios)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="footer">
+    SPLASH DAMAGE 3.4.2 &mdash; <a href="https://github.com/stephenpostlethwaite/DCSSplashDamageScript">GitHub</a> &mdash; <a href="https://forum.dcs.world/topic/370261-splash-damage-3x-script-now-with-more-explosions-version-34-now-with-more-stuff/">ED Forums</a> &mdash; by Stevey666
+  </div>
+
+</div>
+</body>
+</html>

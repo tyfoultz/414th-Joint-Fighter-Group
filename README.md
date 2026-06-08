@@ -1,6 +1,6 @@
-# 414st Joint Fighter Squadron — DCS Scripts & Builds
+# 414th Joint Fighter Group — DCS Scripts & Builds
 
-Shared scripts and mission resources for the 414st JFS multiplayer DCS sessions.
+Shared scripts and mission resources for the 414th JFG multiplayer DCS sessions.
 
 ## Repository Structure
 
@@ -14,6 +14,10 @@ scripts/
     ├── C-130J-30 Mission Systems.lua            # EC-130H EW + RC-130H ISR platform
     ├── C-130J-30 Mission Systems Overview.txt   # Player-facing reference
     └── C-130J-30 Mission Systems HANDOFF.md     # Developer reference (read before editing)
+references/
+├── DCS_Instructions.md              # General DCS guidance
+├── moose_tic_mantis_reference.md    # MOOSE / MANTIS / TIC reference
+└── splash_damage_reference.html     # Splash Damage feature reference
 ```
 
 ## Usage

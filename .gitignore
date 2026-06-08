@@ -1,8 +1,14 @@
-# DCS mission files (large binaries)
+# Mission-specific content (local only, not shared)
+missions/
+
+# Large binaries
 *.miz
+*.zip
+*.pdf
 
 # Extracted mission internals
 miz_extracted/
+*_extracted/
 
 # MOOSE framework (download separately)
 Moose.lua
