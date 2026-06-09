@@ -29,8 +29,11 @@ MOOSE-dependent scripts (`scripts/iads/`, `scripts/cap/`) will crash if Moose.lu
 ### `scripts/iads/` — MANTIS IADS (tracked)
 MOOSE MANTIS-based Integrated Air Defense System setup. Manages red SAM network behavior: detection intervals, max active sites, engagement ranges, auto-relocation.
 
-### `scripts/cap/` — AI A2A Dispatcher (tracked)
-MOOSE `AI_A2A_DISPATCHER` for red AI air defense. Layered CAP + GCI across inner/middle/outer rings of airbases. Manages squadron assignments, patrol orbits, engagement/disengage radii, replacement intervals.
+### `scripts/cap/` — Red Air Defense (tracked)
+
+**AI A2A Dispatcher** — MOOSE `AI_A2A_DISPATCHER` for red AI air defense. Layered CAP + GCI across inner/middle/outer rings of airbases. Manages squadron assignments, patrol orbits, engagement/disengage radii, replacement intervals.
+
+**Reactive Scramble** (`reactive_scramble.lua`) — Standalone (MOOSE-dependent) dormant GCI interceptor system. Hand-placed RED groups whose name contains "Scramble" sit on Weapon Hold doing nothing until a Blue aircraft is detected by the RED radar network, then scramble to intercept via `setTask(EngageTargets)`. Two modes: **zone** (holds until a Blue contact enters a `SCRAMBLE_<Airbase>` trigger zone) or **global** (hunts any Blue contact within `CFG_engageRadius`). Tunables at top of file: `CFG_scanInterval`, `CFG_engageRadius`, `CFG_reengageDelay`. SEAD-named groups are excluded. (A Retribution-plugin variant of this script also exists in the separate retribution repo, with a `dcsRetribution.plugins` config-override block added on top of this canonical version.)
 
 ### `scripts/splash-damage/` — Splash Damage 3.4.2 (tracked)
 Third-party splash damage script by stevey9062. Main script loaded first; config override loaded second. See config file comments for every tunable.
