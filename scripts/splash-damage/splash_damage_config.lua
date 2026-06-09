@@ -19,9 +19,9 @@
 
 -------- Debug & Messages --------
 splash_damage_options.game_messages                 = true      -- Show on-screen text when explosions happen
-splash_damage_options.debug                         = true      -- Detailed diagnostics to DCS.log
+splash_damage_options.debug                         = false     -- Detailed diagnostics to DCS.log
 splash_damage_options.weapon_missing_message         = false     -- Alert when a weapon isn't in the explosion table
-splash_damage_options.enable_radio_menu              = true      -- F10 radio menu to tweak settings in-game
+splash_damage_options.enable_radio_menu              = false     -- F10 radio menu to tweak settings in-game
 
 -------- Core Explosion Behavior --------
 splash_damage_options.wave_explosions                = true      -- Blast wave: secondary explosions radiating outward from impact, scaled by object size/distance
@@ -43,7 +43,7 @@ splash_damage_options.cluster_bomblet_reductionmodifier    = true      -- Use eq
 splash_damage_options.cluster_bomblet_damage_modifier      = 1         -- Global multiplier for individual bomblet explosive power
 
 -------- Rockets --------
-splash_damage_options.rocket_multiplier              = 98        -- Multiplier on rocket explosive values (rockets are weak in DCS; raise to compensate)
+splash_damage_options.rocket_multiplier              = 0.8       -- Multiplier on rocket explosive values. Tuned down for smaller splash AoE (APKWS/Hydra etc.); native direct-hit damage is unaffected.
 
 -------- Retribution-Specific --------
 splash_damage_options.shipRadarDamageEnable          = true      -- ARMs (HARMs etc.) can damage/disable ship radar systems
@@ -175,7 +175,7 @@ splash_damage_options.CriticalComponent_Explosion_Power  = 50       -- Size of t
 -- splash_damage_options.giant_explosion_count          = 250       -- Number of sub-explosions in the effect
 -- splash_damage_options.giantexplosion_ondamage        = true      -- Trigger on damage (not just death)
 -- splash_damage_options.giantexplosion_ondeath         = true      -- Trigger on destruction
--- splash_damage_options.giantexplosion_testmode        = true      -- Adds radio commands for testing
+splash_damage_options.giantexplosion_testmode        = false     -- Adds radio commands for testing
 
 -------- Ground/Ship Ordnance (full settings) --------
 -- splash_damage_options.track_groundunitordnance               = true      -- Track shells from ground units for splash effects
