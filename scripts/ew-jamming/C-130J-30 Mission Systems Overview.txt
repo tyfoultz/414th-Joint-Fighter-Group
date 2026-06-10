@@ -67,7 +67,8 @@ Broad coverage trades power; focused modes hit harder. Pick the right tool:
                       the difficulty penalty) — the tool for hardened SA-10 / SA-5.
                       FLAT ~100nm reach, altitude-INDEPENDENT (full power inside ~70nm),
                       so it stays reliable even down low. Auto-cancels if out of range/LOS.
-                      Target list shows SAM/EWR sites only (AAA is never detected).
+                      Target list shows SAM/EWR sites only (AAA is never detected), or a
+                      "No spot targets in range" status line when nothing is available.
 
 Area and Directional reach scale with altitude (see Offensive Jamming); Spot does not.
 
@@ -195,6 +196,7 @@ while jamming (safety override).
 ELINT TRACKING
 --------------
 Up to 3 simultaneous tracks. F10 map mark placed and refreshed every 15 seconds.
+The Track Emitter and Stop Track menus show status lines when no valid entries are available.
 Two-phase lock process:
 
   Phase 1 — 0% to 85%  (60–360s depending on range)
@@ -247,7 +249,8 @@ CREW COORDINATION
 Send a handoff brief to any BLUE PLAYER air group (AI flights are never listed). Covers EW
 status, SIGINT contacts with Bullseye, and active ELINT tracks with confidence and position.
 30-second display on receiving end. The recipient list only shows currently occupied player
-slots, so it updates as players join or leave.
+slots, so it updates as players join or leave. If nobody is available, the menu shows a
+"No player recipients detected" status line.
 
 
 ============================================================

@@ -1365,9 +1365,30 @@ end
 -- Crew coordination — EW/ISR handoff brief
 -- ---------------------------------------------------------------------------
 
-local function sendHandoffBrief(fromName, toGID)
+local groupHasPlayer
+
+local function findBluePlayerAirGroupByName(groupName)
+    if not groupName then return nil end
+    local cats = { Group.Category.AIRPLANE, Group.Category.HELICOPTER }
+    for _, cat in ipairs(cats) do
+        for _, g in ipairs(coalition.getGroups(coalition.side.BLUE, cat) or {}) do
+            if g and g.isExist and g:isExist() and g:getName() == groupName and groupHasPlayer(g) then
+                return g
+            end
+        end
+    end
+    return nil
+end
+
+local function sendHandoffBrief(fromName, toGroupName)
     local unit = Unit.getByName(fromName)
     if not unit or not unit:isExist() then return end
+    local targetGroup = findBluePlayerAirGroupByName(toGroupName)
+    if not targetGroup then
+        emitImmediate(fromName, "Handoff failed: player group no longer available")
+        return
+    end
+    local toGID = targetGroup:getID()
 
     local jp    = unit:getPoint()
     local range = getDetectionRange(unit)
@@ -1421,11 +1442,11 @@ local function sendHandoffBrief(fromName, toGID)
     end
 
     trigger.action.outTextForGroup(toGID, table.concat(lines, "\n"), 30)
-    emitEvent(fromName, "Handoff brief sent")
+    emitImmediate(fromName, "Handoff brief sent to " .. targetGroup:getName())
 end
 
 -- True only if at least one unit in the group is occupied by a human player.
-local function groupHasPlayer(g)
+groupHasPlayer = function(g)
     for _, u in ipairs(g:getUnits() or {}) do
         if u and u.isExist and u:isExist() and u.getPlayerName and u:getPlayerName() then
             return true
@@ -1443,18 +1464,25 @@ local function refreshCoordTargets(name, gid, cmenu)
     coordCmds[name] = {}
     local myGID = groupIDs[name]
     local cats  = { Group.Category.AIRPLANE, Group.Category.HELICOPTER }
+    local found = false
     for _, cat in ipairs(cats) do
         for _, g in ipairs(coalition.getGroups(coalition.side.BLUE, cat) or {}) do
             -- Only offer handoff to other PLAYER groups, never AI flights.
             if g and g.isExist and g:isExist() and g:getID() ~= myGID and groupHasPlayer(g) then
-                local toGID = g:getID()
                 local label = g:getName()
+                found = true
                 local cmd = missionCommands.addCommandForGroup(gid, label, cmenu, function()
-                    sendHandoffBrief(name, toGID)
+                    sendHandoffBrief(name, label)
                 end)
                 table.insert(coordCmds[name], cmd)
             end
         end
+    end
+    if not found then
+        local cmd = missionCommands.addCommandForGroup(gid, "No player recipients detected", cmenu, function()
+            emitImmediate(name, "No other BLUE player air groups detected")
+        end)
+        table.insert(coordCmds[name], cmd)
     end
 end
 
@@ -1477,6 +1505,7 @@ local function refreshTrackTargets(name, gid, tsMenu)
     -- farthest auto-track (see click handler) rather than hiding the whole list.
 
     local cats = { Group.Category.GROUND, Group.Category.SHIP }
+    local found = false
     for _, cat in ipairs(cats) do
         local groups = coalition.getGroups(coalition.side.RED, cat) or {}
         for _, g in ipairs(groups) do
@@ -1492,6 +1521,7 @@ local function refreshTrackTargets(name, gid, tsMenu)
                     local brg    = getBearing(jp, tp)
                     local distNm = math.floor(dist/1852+0.5)
                     local label  = getNatoName(radar) .. " | " .. brg .. " | " .. distNm .. "nm"
+                    found = true
                     local cmd = missionCommands.addCommandForGroup(gid, label, tsMenu, function()
                         if countTracks(name) >= CFG_maxTracks then
                             -- At capacity: bump the least-important auto-track to make room.
@@ -1535,6 +1565,12 @@ local function refreshTrackTargets(name, gid, tsMenu)
             end
         end
     end
+    if not found then
+        local cmd = missionCommands.addCommandForGroup(gid, "No untracked emitters in range", tsMenu, function()
+            emitImmediate(name, "No untracked SAM/EWR emitters in ISR range")
+        end)
+        table.insert(trackCmds[name], cmd)
+    end
 end
 
 local function refreshStopTrackMenu(name, gid, stMenu)
@@ -1545,6 +1581,7 @@ local function refreshStopTrackMenu(name, gid, stMenu)
     end
     stopTrackCmds[name] = {}
 
+    local found = false
     for gname, track in pairs(markedTarget[name] or {}) do
         local c    = getConfidence(track)
         local nato = track.nato
@@ -1556,6 +1593,13 @@ local function refreshStopTrackMenu(name, gid, stMenu)
         local msg   = "Stopped tracking: " .. nato .. " " .. be
         local cmd = missionCommands.addCommandForGroup(gid, label, stMenu, function()
             stopTrack(name, g, msg)
+        end)
+        table.insert(stopTrackCmds[name], cmd)
+        found = true
+    end
+    if not found then
+        local cmd = missionCommands.addCommandForGroup(gid, "No active tracks", stMenu, function()
+            emitImmediate(name, "No active ELINT tracks")
         end)
         table.insert(stopTrackCmds[name], cmd)
     end
@@ -1577,6 +1621,7 @@ local function refreshSpotTargetList(name, gid, tsMenu)
     local jp   = unit:getPoint()
 
     local cats = { Group.Category.GROUND, Group.Category.SHIP }
+    local found = false
     for _, cat in ipairs(cats) do
         local groups = coalition.getGroups(coalition.side.RED, cat) or {}
         for _, g in ipairs(groups) do
@@ -1592,6 +1637,7 @@ local function refreshSpotTargetList(name, gid, tsMenu)
                     local distNm = math.floor(dist/1852+0.5)
                     local label  = getNatoName(radar) .. " | " .. brg .. " | " .. distNm .. "nm"
                     local gname  = g:getName()
+                    found = true
                     local cmd = missionCommands.addCommandForGroup(gid, label, tsMenu, function()
                         if overheated[name] and (emitterCapacity[name] or 0) < CFG_overheatResetCap then
                             emitImmediate(name, "Overheat (need >=" .. CFG_overheatResetCap .. ")"); return
@@ -1604,6 +1650,12 @@ local function refreshSpotTargetList(name, gid, tsMenu)
                 end
             end
         end
+    end
+    if not found then
+        local cmd = missionCommands.addCommandForGroup(gid, "No spot targets in range", tsMenu, function()
+            emitImmediate(name, "No SAM/EWR emitters inside spot-jam range")
+        end)
+        table.insert(spotTargetCmds[name], cmd)
     end
 end
 
@@ -1665,6 +1717,7 @@ local function buildEWPostLoadoutMenus(name, ewRoot, gid)
     end)
     local tsMenu = missionCommands.addSubMenuForGroup(gid, "Select Target", sjMenu)
     spotTargetMenus[name] = tsMenu
+    refreshSpotTargetList(name, gid, tsMenu)
 
     missionCommands.addCommandForGroup(gid, "Disable All EW Modes", ewRoot, function()
         closeAllEW(name, true); emitImmediate(name, "All EW: OFF")
@@ -1739,9 +1792,11 @@ local function buildISRSubMenu(name, root, gid)
 
     local tkMenu = missionCommands.addSubMenuForGroup(gid, "Track Emitter", isrRoot)
     trackMenus[name] = tkMenu
+    refreshTrackTargets(name, gid, tkMenu)
 
     local stMenu = missionCommands.addSubMenuForGroup(gid, "Stop Track", isrRoot)
     stopTrackMenus[name] = stMenu
+    refreshStopTrackMenu(name, gid, stMenu)
 
     missionCommands.addCommandForGroup(gid, "Stop All Tracks", isrRoot, function()
         stopAllTracks(name)
@@ -1779,6 +1834,7 @@ local function buildCoordSubMenu(name, root, gid)
     coordCmds[name] = {}
     -- store briefMenu handle so refresh knows where to add commands
     coordMenus[name .. "_brief"] = briefMenu
+    refreshCoordTargets(name, gid, briefMenu)
 end
 
 buildMenusFor = function(name)
