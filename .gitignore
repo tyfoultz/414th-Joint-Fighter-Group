@@ -1,6 +1,11 @@
 # Mission-specific content (local only, not shared)
 missions/
 
+# Local Retribution working copies (the canonical repo is github.com/bradyccox/414Ret).
+# Kept out of this repo so full clones aren't accidentally committed as gitlinks.
+414Ret/
+retribution-*/
+
 # Large binaries
 *.miz
 *.zip
