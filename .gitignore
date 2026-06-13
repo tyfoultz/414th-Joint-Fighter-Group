@@ -11,7 +11,8 @@ retribution-*/
 *.zip
 *.pdf
 
-# Extracted mission internals
+# Extracted mission internals and scratch workspace
+tmp/
 miz_extracted/
 *_extracted/
 
