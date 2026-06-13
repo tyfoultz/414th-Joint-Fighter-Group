@@ -1,0 +1,23 @@
+# -------------- 20260613-002106 --------------
+DCS/2.9.27.24969 (x86_64; MT; Windows NT 10.0.26100)
+E:\DCS World\Mods\aircraft\FA-18C\bin\FA18C.dll
+# C0000005 ACCESS_VIOLATION at 00007ff944560c0d 00:00000000
+SymInit: Symbol-SearchPath: 'E:\DCS World\bin;', symOptions: 532, UserName: 'brady'
+OS-Version: 10.0.26100 () 0x100-0x1
+0x00000000004e0c0d (FA18C): ed_fm_enable_debug_info + 0x1E377D
+0x00000000004e3d41 (FA18C): ed_fm_enable_debug_info + 0x1E68B1
+0x0000000000392104 (CockpitBase): cockpit::ceSimple::update + 0x254
+0x000000000037c9ea (CockpitBase): cockpit::ccIndicatorPage::update + 0x3A
+0x0000000000377a4d (CockpitBase): cockpit::ccIndicator::update + 0x3D
+0x00000000004e0334 (FA18C): ed_fm_enable_debug_info + 0x1E2EA4
+0x00000000004e5f78 (FA18C): ed_fm_enable_debug_info + 0x1E8AE8
+0x00000000003713a6 (CockpitBase): cockpit::ccIndicator::draw_to_viewport + 0xA6
+0x000000000037a6c7 (CockpitBase): cockpit::ccIndicatorBake::setPosteffectParams + 0x167
+0x00000000003aa201 (CockpitBase): cockpit::MultiThreading::annotate_viewport + 0x2A1
+0x00000000003abb2b (CockpitBase): cockpit::MultiThreading::hint_for_render + 0x12FB
+0x0000000000159484 (Visualizer): smCamera_Implement::getClipRegion + 0x1E9A4
+0x0000000000035e59 (edCore): ed::SyncTaskQueue::push_task + 0x489
+0x000000000004a8b6 (edCore): ed::SyncTaskQueue::push_task + 0x14EE6
+0x00000000000346e1 (edCore): ed::thread::_get_current_thread_id + 0x71
+0x00000000000037b0 (ucrtbase): wcsrchr + 0x150
+0x000000000002e8d7 (KERNEL32): BaseThreadInitThunk + 0x17

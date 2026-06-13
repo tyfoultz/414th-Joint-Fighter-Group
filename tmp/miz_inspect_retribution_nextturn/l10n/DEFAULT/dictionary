@@ -1,0 +1,90 @@
+dictionary=
+{
+	["DictKey_Translation_1"]="DCS Retribution Turn 1\
+====================\
+Most briefing information, including communications and flight plan information, can be found on your kneeboard.\
+\
+Current situation:\
+====================\
+There are combats between Tonopah Test Range and Groom Lake. On this location, our ground forces will try to make progress against the enemy. As the enemy is outnumbered, our forces should have no issue making progress.\
+\
+Your flights:\
+====================\
+--------------------------------------------------\
+SEAD Escort FA-18C_hornet x 2, departing in 0:00:00, Groom Lake\
+Freq : COMM2 Ch 1 (356.900 MHz AM)\
+0 09:35:06 -- TAKEOFF : Takeoff\
+1 Depart  09:43:43.318670 -- HOLD : Wait until push time\
+2 09:46:08.886922 -- JOIN : Rendezvous with package\
+3 09:49:29.637638 -- INGRESS : INGRESS on Groom Lake\
+4 09:54:04.577271 -- ESCORT HOLD : Anchor and hold at this point\
+5 09:54:57 -- TARGET : Escort the package\
+6 10:04:02.132530 -- SPLIT : Depart from package\
+7 -- LANDING : Land\
+8 -- BULLSEYE : Bullseye\
+--------------------------------------------------\
+\
+Planned ally flights:\
+====================\
+Tonopah Test Range\
+---------------------------------------------------\
+AEW&amp;C E-3A x 1, departing in 0:00:00, Tonopah, TOT: 2002-02-24 09:11:46\
+BAI F-16C_50 x 2, departing in 0:17:32, DRAGONFLY, TOT: 2002-02-24 09:57:57\
+SEAD Escort F-16C_50 x 2, departing in 0:17:47, DRAGONFLY, TOT: 2002-02-24 09:57:57\
+SEAD Sweep F-16C_50 x 2, departing in 0:15:23, DRAGONFLY, TOT: 2002-02-24 09:57:57\
+OCA/Runway FA-18C_hornet x 2, departing in 0:17:52, Groom Lake, TOT: 2002-02-24 09:54:57\
+Escort FA-18C_hornet x 2, departing in 0:17:54, Groom Lake, TOT: 2002-02-24 09:54:57\
+SEAD Sweep FA-18C_hornet x 2, departing in 0:15:49, Groom Lake, TOT: 2002-02-24 09:54:57\
+BAI F-16C_50 x 2, departing in 0:13:29, PENGUIN, TOT: 2002-02-24 09:50:02\
+SEAD Escort F-16C_50 x 2, departing in 0:13:31, PENGUIN, TOT: 2002-02-24 09:50:02\
+SEAD Sweep F-16C_50 x 2, departing in 0:11:29, PENGUIN, TOT: 2002-02-24 09:50:02\
+BAI FA-18C_hornet x 2, departing in 0:13:26, RACOON, TOT: 2002-02-24 09:49:29\
+SEAD Escort FA-18C_hornet x 2, departing in 0:13:27, RACOON, TOT: 2002-02-24 09:49:29\
+Escort FA-18C_hornet x 2, departing in 0:13:30, RACOON, TOT: 2002-02-24 09:49:29\
+SEAD Sweep FA-18C_hornet x 2, departing in 0:11:31, RACOON, TOT: 2002-02-24 09:49:29\
+BAI A-10C_2 x 2, departing in 0:02:46, CARACAL, TOT: 2002-02-24 09:48:30\
+SEAD Escort EA-18G x 2, departing in 0:09:48, CARACAL, TOT: 2002-02-24 09:48:30\
+SEAD Sweep EA-18G x 2, departing in 0:07:57, CARACAL, TOT: 2002-02-24 09:48:30\
+BAI A-10C_2 x 2, departing in 0:00:00, GORILLA, TOT: 2002-02-24 09:42:01\
+SEAD Escort EA-18G x 2, departing in 0:02:27, GORILLA, TOT: 2002-02-24 09:42:01\
+SEAD Sweep EA-18G x 2, departing in 0:00:45, GORILLA, TOT: 2002-02-24 09:42:01\
+BAI F-16C_50 x 2, departing in 0:04:02, CIVET, TOT: 2002-02-24 09:41:07\
+SEAD Escort EA-18G x 2, departing in 0:04:11, CIVET, TOT: 2002-02-24 09:41:07\
+SEAD Sweep F-16C_50 x 2, departing in 0:02:10, CIVET, TOT: 2002-02-24 09:41:07\
+BAI A-10C_2 x 2, departing in 0:00:00, NEWT, TOT: 2002-02-24 09:34:24\
+SEAD Escort EA-18G x 2, departing in 0:00:00, NEWT, TOT: 2002-02-24 09:34:24\
+SEAD Sweep EA-18G x 2, departing in 0:00:00, NEWT, TOT: 2002-02-24 09:34:24\
+CAS A-10C_2 x 2, departing in 0:00:00, Front line Tonopah Test Range/Groom Lake, TOT: 2002-02-24 09:20:17\
+SEAD Sweep EA-18G x 2, departing in 0:00:00, Front line Tonopah Test Range/Groom Lake, TOT: 2002-02-24 09:20:17\
+\
+Tonopah\
+---------------------------------------------------\
+Escort F-22A x 2, departing in 0:17:28, DRAGONFLY, TOT: 2002-02-24 09:57:57\
+Escort F-22A x 2, departing in 0:06:21, PENGUIN, TOT: 2002-02-24 09:50:02\
+Escort F-22A x 2, departing in 0:09:52, CARACAL, TOT: 2002-02-24 09:48:30\
+Escort F-22A x 2, departing in 0:02:19, GORILLA, TOT: 2002-02-24 09:42:01\
+Escort F-22A x 2, departing in 0:04:04, CIVET, TOT: 2002-02-24 09:41:07\
+Escort F-22A x 2, departing in 0:00:00, NEWT, TOT: 2002-02-24 09:34:24\
+BARCAP F-22A x 2, departing in 0:00:00, Tonopah Test Range, TOT: 2002-02-24 09:04:36\
+\
+Carriers and FARPs:\
+====================\
+Tonopah\
+--------------------------------------------------\
+RADIO : None\
+TACAN : 1X TON\
+\
+\
+AWACS:\
+====================\
+Wizard 5 -- Freq : 245.0\
+\
+JTACS [F-10 Menu] :\
+====================\
+Frontline Frontline Tonopah Test Range/Groom Lake -- Code : 1688, Freq : 343.0\
+\
+",
+	["DictKey_Translation_2"]="",
+	["DictKey_Translation_3"]="",
+	["DictKey_Translation_4"]=""
+}

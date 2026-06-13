@@ -1,0 +1,106 @@
+dictionary=
+{
+	["DictKey_Translation_1"]="DCS Retribution Turn 1\
+====================\
+Most briefing information, including communications and flight plan information, can be found on your kneeboard.\
+\
+Current situation:\
+====================\
+There are combats between Ramon Airbase and Melez. On this location, our ground forces will focus on progression toward Melez\
+\
+Planned ally flights:\
+====================\
+Ramon International Airport\
+---------------------------------------------------\
+Refueling KC-135 x 1, departing in 0:05:57, Ramon Airbase, TOT: 2025-09-01 16:21:11\
+Air Assault Hercules x 2, departing in 0:27:05, Wadi Abu Rish, TOT: 2025-09-01 17:08:03\
+Strike B-1B x 1, departing in 0:43:28, LIONFISH, TOT: 2025-09-01 17:07:48\
+Strike B-1B x 1, departing in 0:45:31, OWL, TOT: 2025-09-01 17:05:34\
+\
+Ovda\
+---------------------------------------------------\
+Escort F-15C x 2, departing in 0:09:40, Ramon Airbase, TOT: 2025-09-01 16:21:11\
+Escort F-15C x 2, departing in 0:35:33, Wadi Abu Rish, TOT: 2025-09-01 17:08:03\
+Escort F-22A x 2, departing in 0:43:26, LIONFISH, TOT: 2025-09-01 17:07:48\
+Escort F-22A x 2, departing in 0:45:40, OWL, TOT: 2025-09-01 17:05:34\
+Escort F-15C x 2, departing in 0:26:09, CAPYBARA, TOT: 2025-09-01 17:05:17\
+BAI A-10C_2 x 2, departing in 0:22:22, ELEPHANT, TOT: 2025-09-01 17:04:09\
+Escort F-15C x 2, departing in 0:33:00, ELEPHANT, TOT: 2025-09-01 17:04:09\
+SEAD Sweep JF-17 x 2, departing in 0:31:48, ELEPHANT, TOT: 2025-09-01 17:04:09\
+OCA/Runway F-15ESE x 2, departing in 0:32:55, Wadi Abu Rish, TOT: 2025-09-01 17:00:41\
+Escort F-22A x 2, departing in 0:32:48, Wadi Abu Rish, TOT: 2025-09-01 17:00:41\
+Escort F-15C x 2, departing in 0:19:09, GREYHOUND, TOT: 2025-09-01 16:44:03\
+SEAD Sweep JF-17 x 2, departing in 0:17:07, GREYHOUND, TOT: 2025-09-01 16:44:03\
+Escort F-15C x 2, departing in 0:16:19, BELUGA, TOT: 2025-09-01 16:40:29\
+SEAD Sweep JF-17 x 2, departing in 0:14:06, BELUGA, TOT: 2025-09-01 16:40:29\
+CAS A-10C_2 x 2, departing in 0:19:15, Front line Ramon Airbase/Melez, TOT: 2025-09-01 16:32:23\
+SEAD Sweep JF-17 x 2, departing in 0:08:48, Front line Ramon Airbase/Melez, TOT: 2025-09-01 16:32:23\
+\
+CVN-71 Theodore Roosevelt\
+---------------------------------------------------\
+AEW&amp;C E-2C x 1, departing in 0:00:00, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 16:17:36\
+Escort FA-18C_hornet x 2, departing in 0:14:40, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 16:17:36\
+AEW&amp;C E-2C x 1, departing in 0:00:00, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 16:12:59\
+Escort FA-18C_hornet x 2, departing in 0:10:05, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 16:12:59\
+Scramble FA-18C_hornet x 2, departing in 1:26:27, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 17:31:08\
+SEAD Escort EA-18G x 2, departing in 0:23:38, Wadi Abu Rish, TOT: 2025-09-01 17:08:03\
+SEAD Sweep EA-18G x 2, departing in 0:21:16, Wadi Abu Rish, TOT: 2025-09-01 17:08:03\
+SEAD Escort FA-18C_hornet x 2, departing in 0:35:50, LIONFISH, TOT: 2025-09-01 17:07:48\
+SEAD Sweep FA-18C_hornet x 2, departing in 0:33:50, LIONFISH, TOT: 2025-09-01 17:07:48\
+SEAD Sweep EA-18G x 2, departing in 0:31:19, OWL, TOT: 2025-09-01 17:05:34\
+BAI FA-18C_hornet x 2, departing in 0:34:59, CAPYBARA, TOT: 2025-09-01 17:05:17\
+SEAD Escort EA-18G x 2, departing in 0:34:54, CAPYBARA, TOT: 2025-09-01 17:05:17\
+SEAD Sweep EA-18G x 2, departing in 0:33:30, CAPYBARA, TOT: 2025-09-01 17:05:17\
+SEAD Escort EA-18G x 2, departing in 0:19:28, ELEPHANT, TOT: 2025-09-01 17:04:09\
+SEAD Escort EA-18G x 2, departing in 0:25:18, Wadi Abu Rish, TOT: 2025-09-01 17:00:41\
+SEAD Sweep EA-18G x 2, departing in 0:23:03, Wadi Abu Rish, TOT: 2025-09-01 17:00:41\
+BARCAP FA-18C_hornet x 2, departing in 0:00:00, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 16:01:39\
+BARCAP FA-18C_hornet x 2, departing in 0:00:00, CVN-71 Theodore Roosevelt, TOT: 2025-09-01 16:01:08\
+\
+Ramon Airbase\
+---------------------------------------------------\
+Scramble F-16C_50 x 2, departing in 1:19:46, Ramon Airbase, TOT: 2025-09-01 17:33:27\
+SEAD Escort F-16C_50 x 2, departing in 0:44:47, OWL, TOT: 2025-09-01 17:05:34\
+BAI F-16C_50 x 2, departing in 0:22:42, GREYHOUND, TOT: 2025-09-01 16:44:03\
+SEAD Escort F-16C_50 x 2, departing in 0:22:47, GREYHOUND, TOT: 2025-09-01 16:44:03\
+BAI F-16C_50 x 2, departing in 0:19:48, BELUGA, TOT: 2025-09-01 16:40:29\
+SEAD Escort F-16C_50 x 2, departing in 0:19:57, BELUGA, TOT: 2025-09-01 16:40:29\
+BARCAP Mirage-F1M-EE x 2, departing in 0:00:00, Ramon Airbase, TOT: 2025-09-01 16:03:27\
+\
+Carriers and FARPs:\
+====================\
+Ovda\
+--------------------------------------------------\
+RADIO : 250.050 MHz AM\
+TACAN : 1X OVD\
+\
+Ramon International Airport\
+--------------------------------------------------\
+RADIO : 251.750 MHz AM\
+TACAN : 31X RAM\
+\
+CVN-71 Theodore Roosevelt\
+--------------------------------------------------\
+RADIO : 262 MHz AM\
+TACAN : 32X ABR\
+ICLS Channel: 1\
+\
+\
+AWACS:\
+====================\
+Overlord 8 -- Freq : 340.0\
+Focus 7 -- Freq : 235.0\
+\
+TANKERS:\
+====================\
+Shell 8 -- Freq : 256.0, TACAN : 37Y\
+\
+JTACS [F-10 Menu] :\
+====================\
+Frontline Frontline Ramon Airbase/Melez -- Code : 1688, Freq : 344.0\
+\
+",
+	["DictKey_Translation_2"]="",
+	["DictKey_Translation_3"]="",
+	["DictKey_Translation_4"]=""
+}

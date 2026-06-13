@@ -1,0 +1,16 @@
+mapResource=
+{
+	["ResKey_10"]="ctld-config.lua",
+	["ResKey_11"]="Hercules_Cargo.lua",
+	["ResKey_12"]="skynet-iads-compiled.lua",
+	["ResKey_13"]="skynetiads-config.lua",
+	["ResKey_14"]="Splash_Damage_3.4.2_Standard_Retribution.lua",
+	["ResKey_15"]="sd3-config.lua",
+	["ResKey_16"]="reactive_scramble.lua",
+	["ResKey_17"]="splash_screen.png",
+	["ResKey_5"]="mist_4_5_126.lua",
+	["ResKey_6"]="json.lua",
+	["ResKey_7"]="dcs_retribution.lua",
+	["ResKey_8"]="Moose.lua",
+	["ResKey_9"]="CTLD.lua"
+}
