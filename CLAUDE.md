@@ -1,5 +1,13 @@
 # 414th Joint Fighter Group — DCS Scripts & Missions
 
+## WHERE TO PUSH — READ THIS FIRST
+
+**All scripting and mission-generator work goes to `bradyccox/414Ret`.** That is the 414th's fork of DCS Retribution and is the canonical repo for everything that ends up in the dynamic campaign. Local path: `414Ret/` (gitignored here).
+
+**This repo (`tyfoultz/414th-Joint-Fighter-Group`) is for standalone DCS scripts only** — things loaded directly in the Mission Editor that have no dependency on Retribution. If you are unsure which repo a change belongs in, it almost certainly belongs in 414Ret.
+
+Do **not** create PRs from `bradys-changes` on this repo for Retribution-related work. Push to `bradyccox/414Ret` instead.
+
 ## What This Is
 
 DCS World scripts and mission-building workspace for the 414th Joint Fighter Group. The repo has two layers:
